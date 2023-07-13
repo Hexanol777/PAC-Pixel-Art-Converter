@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="[path/to/image.png](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/READMEmd/lantern.png)" alt="PAC - Logo" />
+  <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/READMEmd/lantern.png" alt="PAC - Logo" />
 </p>
 
 
