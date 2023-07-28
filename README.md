@@ -41,7 +41,7 @@ PAC (Pixel Art Converter) is a simple GUI application that allows you to convert
 
 ## Usage
 
-1. Run the PAC application(this can also be done by clicking on PAC - GUI.pyw):
+1. Run the PAC application(this can also be done by running PAC - GUI.pyw):
 
    ```bash
    python pac-gui.py
@@ -66,7 +66,7 @@ Image name serves as a record of the specific parameter values used during the i
 - Get the `Sharpness` parameter to work again
 
 ## Examples
-LifeLine
+LifeLine:
 ![LifeLine](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/input/2.jpg)
 ![LifeLine](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Lifeline%20-%205%20-%2075%20-%20100%20-%20100.png)
 
