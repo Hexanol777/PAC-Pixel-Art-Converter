@@ -8,7 +8,7 @@
 PAC (Pixel Art Converter) is a simple GUI application that allows you to convert images into pixel art. It provides various options to manipulate the image, such as adjusting pixel size, color palette, brightness, sharpness, and vibrance.
 
 <p align="center">
-  <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Lain%20-%205%20-%2025%20-%20100%20-%20121.png" alt="PAC - screenshot" />
+  <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/READMEmd/PAC%20-%20screenshot.png" alt="PAC - screenshot" />
 </p>
 
 ## Features
