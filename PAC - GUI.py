@@ -13,7 +13,10 @@ class pixelize(ctk.CTk):
         ctk.set_appearance_mode('system')
         self.geometry('900x600')
         self.minsize(900, 600)
-        self.iconbitmap('lantern.ico')
+        try:
+            self.iconbitmap('lantern.ico')
+        except Exception as e:
+            print(e + "\nicon could not be loaded, using default ico...")
         self.title('Pixel Art Converter - PAC')
         self.init_parameters()
 
@@ -75,7 +78,6 @@ class pixelize(ctk.CTk):
         self.original = Image.open(path)
         self.image = self.original
         self.image_title = os.path.splitext(os.path.basename(path))[0]  # extract the image title without the extention
-        print(self.image_title)
         self.image_ratio = self.image.size[0] / self.image.size[1]
         self.image_tk = ImageTk.PhotoImage(self.image)
 
@@ -119,20 +121,26 @@ class pixelize(ctk.CTk):
         self.image_output.delete('all')
         resized_image = self.image.resize((self.image_width, self.image_height))
         self.image_tk = ImageTk.PhotoImage(resized_image)
-        self.image_output.create_image(self.canvas_width / 2, self.canvas_height / 2, image=self.image_tk)
+        self.image_output.create_image(self.canvas_width / 2, 
+                                       self.canvas_height / 2, 
+                                       image=self.image_tk)
 
     def export_image(self, name, file, path):
         export_string = f'{path}/{name} - {self.parameter_values}.{file}'
-        print(export_string)
-        self.image = self.image.resize((self.original.width, self.original.height))
+
+        self.image = self.image.resize((self.original.width, 
+                                        self.original.height))
         self.image.save(export_string)
 
     def resize_image_pixelsize(self, image, pixel_size):
         # Resize the image to the desired pixel size
         self.image = self.image.convert("RGB")
+        
         self.new_width = self.image.size[1] // round(pixel_size)
         self.new_height = self.image.size[0] // round(pixel_size)
-        self.resized_img_pixelsize = image.resize((self.new_width, self.new_height), Image.NEAREST)
+
+        self.resized_img_pixelsize = image.resize((self.new_width, 
+                                                   self.new_height), Image.NEAREST)
         return self.resized_img_pixelsize
 
     def quantize_colors(self, image, color_palette):

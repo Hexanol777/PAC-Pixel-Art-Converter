@@ -16,19 +16,27 @@ class SliderPanel(Panel):
         self.rowconfigure((0,1), weight = 1)
         self.columnconfigure((0,1), weight = 1)
 
-        ctk.CTkLabel(self, text = text).grid(column = 0, row = 0, sticky = 'W', padx = 5)
+        ctk.CTkLabel(self, text = text).grid(column = 0, row = 0
+                                             , sticky = 'W'
+                                             , padx = 5)
+        
         self.num_label = ctk.CTkLabel(self, text = data_var.get())
-        self.num_label.grid(column = 1, row = 0, sticky = 'E', padx = 5)
+        self.num_label.grid(column = 1, row = 0
+                            , sticky = 'E'
+                            , padx = 5)
 
         ctk.CTkSlider(self,
                       fg_color = SLIDER_BG,
                       variable=data_var,
                       from_ = min_value,
                       to = max_value,
-                      command = self.update_text).grid(row = 1, column = 0, columnspan = 2, sticky = 'ew', padx = 5, pady = 5)
+                      command = self.update_text).grid(row = 1, column = 0
+                                                       , columnspan = 2
+                                                       , sticky = 'ew'
+                                                       , padx = 5
+                                                       , pady = 5)
 
     def update_text(self, value):
-        print(value)
         self.num_label.configure(text = f'{round(value, 0)}')
 
 class FileNamePanel(Panel):
