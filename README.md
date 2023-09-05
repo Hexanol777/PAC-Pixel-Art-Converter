@@ -34,7 +34,7 @@ PAC (Pixel Art Converter) is a simple GUI application that allows you to convert
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/Hexanol777/pac-pixel-art-converter.git
+   git clone https://github.com/Hexanol777/PAC-Pixel-Art-Converter.git
 2. Install the dependencies:
    ```bash
    pip install -r requirements.txt
