@@ -17,7 +17,7 @@ class pixelize(ctk.CTk):
             self.iconbitmap('lantern.ico')
         except Exception as e:
             print(e + "\nicon could not be loaded, using default ico...")
-        self.title('Pixel Art Converter - PAC')
+        self.title('PAC - Pixel Art Converter')
         self.init_parameters()
 
         # layout
