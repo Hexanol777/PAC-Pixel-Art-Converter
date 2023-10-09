@@ -13,10 +13,12 @@ class pixelize(ctk.CTk):
         ctk.set_appearance_mode('system')
         self.geometry('900x600')
         self.minsize(900, 600)
+
         try:
             self.iconbitmap('lantern.ico')
         except Exception as e:
-            print(e + "\nicon could not be loaded, using default ico...")
+            print(e + "\nicon could not be loaded, using default icon...")
+
         self.title('PAC - Pixel Art Converter')
         self.init_parameters()
 
@@ -30,7 +32,7 @@ class pixelize(ctk.CTk):
         self.canvas_width = 0
         self.canvas_height = 0
 
-        #widgets
+        # widgets
         self.image_import = ImageImport(self, self.import_image)
 
         # run
@@ -174,8 +176,8 @@ class pixelize(ctk.CTk):
         return self.vibrant_image
 
 
-   # the function below tends to give better output images compared to the current methods
-   # above, but it's also much slower, might try to base the calculations on NumPy for a
+   # the function below tends to output better images compared to the current method
+   # but it's also much slower, might try to base the calculations on NumPy for a
    # faster execution in the future ...
 
 
