@@ -1,8 +1,10 @@
+import sys
+sys.path.append("utils")
 import customtkinter as ctk
-from image_widgets import *
+from utils.image_widgets import *
 from PIL import Image, ImageTk, ImageEnhance
-from Settings import *
-from menu import Menu
+from utils.Settings import *
+from utils.menu import Menu
 import os
 
 class pixelize(ctk.CTk):
