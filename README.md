@@ -72,10 +72,12 @@ LifeLine:
 
 Lain:
 <p float="left">
-  <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/input/Lain.jpg" width="400" />
-  <em>Lain</em>
-  <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Lain%20-%205%20-%2025%20-%20100%20-%20121.png" width="400" />
-  <em>Lain - Pixelized</em>
+  <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/input/Lain.jpg" width="500" />
+  <br><em>Lain</em>
+</p>
+<p float="left">
+  <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Lain%20-%205%20-%2025%20-%20100%20-%20121.png" width="500" />
+  <br><em>Lain - Pixelized</em>
 </p>
 
 
