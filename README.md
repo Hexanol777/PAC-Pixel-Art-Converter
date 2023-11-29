@@ -70,7 +70,12 @@ LifeLine:
 ![LifeLine](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/input/2.jpg)
 ![LifeLine](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Lifeline%20-%205%20-%2075%20-%20100%20-%20100.png)
 
-AS:
-![AS](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/input/Alchemy%20Stars.png)
-![AS](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Alchemy%20Stars%20-%205%20-%2025%20-%20100%20-%20100.png)
+Lain:
+<p align="left">
+  <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/input/Lain.jpg" alt="PAC - screenshot" />
+</p>
+<p align="right">
+  <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Lain%20-%205%20-%2025%20-%20100%20-%20121.png" alt="PAC - screenshot" />
+</p>
+
 
