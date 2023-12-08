@@ -71,11 +71,9 @@ LifeLine:
 ![LifeLine](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Lifeline%20-%205%20-%2075%20-%20100%20-%20100.png)
 
 Lain:
-<p float="left">
-  <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/input/Lain.jpg" width="100" />
-  <em>Caption for Image 1</em>
-  <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Lain%20-%205%20-%2025%20-%20100%20-%20121.png" width="100" />
-  <em>Caption for Image 2</em>
-</p>
+| ![Lain](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/input/Lain.jpg) | ![Lain - Pixelized](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Lain%20-%205%20-%2025%20-%20100%20-%20121.png) |
+| --- | --- |
+| *Lain* | *Lain - Pixelized* |
+
 
 
