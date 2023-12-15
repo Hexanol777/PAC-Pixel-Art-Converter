@@ -1,9 +1,15 @@
 import customtkinter as ctk
 from Settings import *
-from tkinter import filedialog
+from tkinter import filedialog, font
+
 
 
 class Panel(ctk.CTkFrame):
+    def __init__(self, parent):
+        super().__init__(master = parent, fg_color = DARK_GREY)
+        self.pack(fill = 'x', pady = 4, ipady = 8)
+
+class ImagePanel(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(master = parent, fg_color = DARK_GREY)
         self.pack(fill = 'x', pady = 4, ipady = 8)
@@ -91,7 +97,7 @@ class FilePathPanel(Panel):
 
 class SaveButton(ctk.CTkButton):
     def __init__(self, parent, export_image, name_string, file_string, path_string):
-        super().__init__(master = parent, text= 'Save' , command=self.save)
+        super().__init__(master = parent, text= 'Save', command=self.save)
         self.pack(side = 'bottom', pady = 10)
         self.export_image = export_image
         self.name_string = name_string

@@ -8,6 +8,7 @@ from utils.menu import Menu
 import os
 
 
+
 class pixelize(ctk.CTk):
     def __init__(self):
 
@@ -47,8 +48,8 @@ class pixelize(ctk.CTk):
         self.pixel_size = ctk.DoubleVar(value = PIXEL_SIZE_DEFAULT)
         self.color_palette = ctk.DoubleVar(value = COLOR_PALETTE_DEFAULT)
         self.brightness = ctk.DoubleVar(value = BRIGHTNESS_DEFAULT)
-        self.sharpness = ctk.DoubleVar(value = SHARPNESS_DEFAULT)
         self.vibrance = ctk.DoubleVar(value = VIBRANCE_DEFAULT)
+        self.sharpness = ctk.DoubleVar(value = SHARPNESS_DEFAULT)
 
 
         self.pixel_size.trace('w', self.manipulate_image)
@@ -59,8 +60,8 @@ class pixelize(ctk.CTk):
 
 
 
-    def manipulate_image (self, *args):
-        self.image = self. original
+    def manipulate_image(self, *args):
+        self.image = self.original
 
         # resize the image to the desired pixel size
         self.image = self.resize_image_pixelsize(self.image, self.pixel_size.get())
@@ -68,16 +69,18 @@ class pixelize(ctk.CTk):
         self.image = self.quantize_colors(self.image, self.color_palette.get())
         # manipulates the bright of each pixel individually
         self.image = self.adjust_brightness(self.image, self.brightness.get())
-        # adjusts the level of sharpness of the edges
-        #self.image = self.enhance_sharpness(self.image, self.sharpness.get())
         # changes the color vibrancy
         self.image = self.adjust_vibrance(self.image, self.vibrance.get())
+        # adjusts the level of sharpness of the edges
+        self.image = self.enhance_sharpness(self.image, self.sharpness.get())
+
         self.parameter_values = f'{round(self.pixel_size.get())}' \
                                 f' - {round(self.color_palette.get())}' \
                                 f' - {round(self.brightness.get())}' \
-                                f' - {round(self.vibrance.get())}'
+                                f' - {round(self.vibrance.get())}' 
 
         self.place_image()
+
 
     def import_image(self, path):
         self.original = Image.open(path)
@@ -93,7 +96,7 @@ class pixelize(ctk.CTk):
         self.menu = Menu(self, self.pixel_size,
                          self.color_palette,
                          self.brightness,
-                         self.sharpness,
+                         self.sharpness, 
                          self.vibrance,
                          self.export_image)
 
@@ -176,10 +179,10 @@ class pixelize(ctk.CTk):
         self.adjusted_image = enhancer.enhance(brightness_float)
         return self.adjusted_image
 
-    def enhance_sharpness(self, image, sharpness_factor): # seems to interfere with adjust_vibrance
-        # Enhance the sharpness of the image                commented out for the time being
+    def enhance_sharpness(self, image, sharpness_factor): 
+        # Enhance the sharpness of the image
         self.image = self.image.convert("RGB")
-        sharpness_float = sharpness_factor / 100
+        sharpness_factor = sharpness_factor / 10
         enhancer = ImageEnhance.Sharpness(self.image)
         self.enhanced_image = enhancer.enhance(sharpness_factor)
         return self.enhanced_image

@@ -22,7 +22,7 @@ class Parameters(ctk.CTkFrame):
         SliderPanel(self, 'Pixel Size', pixel_size, 1, 20)
         SliderPanel(self, 'Color Palette', color_palette, 5, 100)
         SliderPanel(self, 'Brightness', brightness, 0, 200)
-        #SliderPanel(self, 'Edge Sharpness', sharpness, 50, 200)
+        SliderPanel(self, 'Edge Sharpness', sharpness, 0, 20)
         SliderPanel(self, 'Color Vibrance', vibrance, 0, 300)
 
 class SaveOptions(ctk.CTkFrame):
