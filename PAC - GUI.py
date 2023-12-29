@@ -15,7 +15,7 @@ class pixelize(ctk.CTk):
         # setup
         super().__init__()
         ctk.set_appearance_mode('system')
-        self.geometry('900x600')
+        self.geometry('1100x750')
         self.minsize(900, 600)
 
         try:
@@ -98,7 +98,8 @@ class pixelize(ctk.CTk):
                          self.brightness,
                          self.sharpness, 
                          self.vibrance,
-                         self.export_image)
+                         self.export_image
+                         )
 
     def close_app(self):
         # removes the image from the frame
