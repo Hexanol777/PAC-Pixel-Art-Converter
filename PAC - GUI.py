@@ -77,6 +77,7 @@ class pixelize(ctk.CTk):
         self.parameter_values = f'{round(self.pixel_size.get())}' \
                                 f' - {round(self.color_palette.get())}' \
                                 f' - {round(self.brightness.get())}' \
+                                f' - {round(self.sharpness.get())}' \
                                 f' - {round(self.vibrance.get())}' 
 
         self.place_image()
