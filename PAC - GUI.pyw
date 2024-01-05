@@ -7,13 +7,15 @@ from utils.Settings import *
 from utils.menu import Menu
 import os
 
+
+
 class pixelize(ctk.CTk):
     def __init__(self):
 
         # setup
         super().__init__()
         ctk.set_appearance_mode('system')
-        self.geometry('900x600')
+        self.geometry('1100x750')
         self.minsize(900, 600)
 
         try:
@@ -46,8 +48,8 @@ class pixelize(ctk.CTk):
         self.pixel_size = ctk.DoubleVar(value = PIXEL_SIZE_DEFAULT)
         self.color_palette = ctk.DoubleVar(value = COLOR_PALETTE_DEFAULT)
         self.brightness = ctk.DoubleVar(value = BRIGHTNESS_DEFAULT)
-        self.sharpness = ctk.DoubleVar(value = SHARPNESS_DEFAULT)
         self.vibrance = ctk.DoubleVar(value = VIBRANCE_DEFAULT)
+        self.sharpness = ctk.DoubleVar(value = SHARPNESS_DEFAULT)
 
 
         self.pixel_size.trace('w', self.manipulate_image)
@@ -58,8 +60,8 @@ class pixelize(ctk.CTk):
 
 
 
-    def manipulate_image (self, *args):
-        self.image = self. original
+    def manipulate_image(self, *args):
+        self.image = self.original
 
         # resize the image to the desired pixel size
         self.image = self.resize_image_pixelsize(self.image, self.pixel_size.get())
@@ -67,16 +69,19 @@ class pixelize(ctk.CTk):
         self.image = self.quantize_colors(self.image, self.color_palette.get())
         # manipulates the bright of each pixel individually
         self.image = self.adjust_brightness(self.image, self.brightness.get())
-        # adjusts the level of sharpness of the edges
-        #self.image = self.enhance_sharpness(self.image, self.sharpness.get())
         # changes the color vibrancy
         self.image = self.adjust_vibrance(self.image, self.vibrance.get())
+        # adjusts the level of sharpness of the edges
+        self.image = self.enhance_sharpness(self.image, self.sharpness.get())
+
         self.parameter_values = f'{round(self.pixel_size.get())}' \
                                 f' - {round(self.color_palette.get())}' \
                                 f' - {round(self.brightness.get())}' \
-                                f' - {round(self.vibrance.get())}'
+                                f' - {round(self.sharpness.get())}' \
+                                f' - {round(self.vibrance.get())}' 
 
         self.place_image()
+
 
     def import_image(self, path):
         self.original = Image.open(path)
@@ -92,9 +97,10 @@ class pixelize(ctk.CTk):
         self.menu = Menu(self, self.pixel_size,
                          self.color_palette,
                          self.brightness,
-                         self.sharpness,
+                         self.sharpness, 
                          self.vibrance,
-                         self.export_image)
+                         self.export_image
+                         )
 
     def close_app(self):
         # removes the image from the frame
@@ -105,28 +111,42 @@ class pixelize(ctk.CTk):
         self.image_import = ImageImport(self, self.import_image)
 
     def resize_image(self, event):
-        # current canvas ratio
-        canvas_ratio = event.width / event.height
-        # update canvas attributes
+        # Update canvas attributes
         self.canvas_width = event.width
         self.canvas_height = event.height
 
-        # resize
-        if canvas_ratio > self.image_ratio:  # canvas is wider than the image
-            self.image_height = int(event.height)
-            self.image_width = int(self.image_height / self.image_ratio)
-        else:  # canvas is taller than the image
-            self.image_width = int(event.width)
-            self.image_height = int(self.image_width / self.image_ratio)
+        # Calculate new dimensions while maintaining aspect ratio
+        canvas_ratio = self.canvas_width / self.canvas_height
+        if canvas_ratio > self.image_ratio:  # Canvas is wider than the image
+            self.image_height = int(round(self.canvas_height))
+            self.image_width = int(round(self.image_height * self.image_ratio))
+        else:  # Canvas is taller than the image
+            self.image_width = int(round(self.canvas_width))
+            self.image_height = int(round(self.image_width / self.image_ratio))
         self.place_image()
 
     def place_image(self):
-        # place
+        # Delete existing items in the canvas
         self.image_output.delete('all')
+
+        # Calculate new dimensions while maintaining aspect ratio
+        canvas_ratio = self.canvas_width / self.canvas_height
+        if canvas_ratio > self.image_ratio:  # Canvas is wider than the image
+            self.image_height = int(round(self.canvas_height))
+            self.image_width = int(round(self.image_height * self.image_ratio))
+        else:  # Canvas is taller than the image
+            self.image_width = int(round(self.canvas_width))
+            self.image_height = int(round(self.image_width / self.image_ratio))
+
+        # Calculate position to center the image
+        x = (self.canvas_width - self.image_width) / 2
+        y = (self.canvas_height - self.image_height) / 2
+
+        # Resize and place the image
         resized_image = self.image.resize((self.image_width, self.image_height))
         self.image_tk = ImageTk.PhotoImage(resized_image)
-        self.image_output.create_image(self.canvas_width / 2, 
-                                       self.canvas_height / 2, 
+        self.image_output.create_image(x + self.image_width / 2, 
+                                       y + self.image_height / 2, 
                                        image=self.image_tk)
 
     def export_image(self, name, file, path):
@@ -144,7 +164,7 @@ class pixelize(ctk.CTk):
         self.new_height = self.image.size[0] // round(pixel_size)
 
         self.resized_img_pixelsize = image.resize((self.new_width, 
-                                                   self.new_height), Image.NEAREST)
+                                                   self.new_height), Image.LANCZOS)
         return self.resized_img_pixelsize
 
     def quantize_colors(self, image, color_palette):
@@ -161,10 +181,10 @@ class pixelize(ctk.CTk):
         self.adjusted_image = enhancer.enhance(brightness_float)
         return self.adjusted_image
 
-    def enhance_sharpness(self, image, sharpness_factor): # seems to interfere with the adjust_vibrance
-        # Enhance the sharpness of the image                commented out for the time being
+    def enhance_sharpness(self, image, sharpness_factor): 
+        # Enhance the sharpness of the image
         self.image = self.image.convert("RGB")
-        sharpness_float = sharpness_factor / 100
+        sharpness_factor = sharpness_factor / 10
         enhancer = ImageEnhance.Sharpness(self.image)
         self.enhanced_image = enhancer.enhance(sharpness_factor)
         return self.enhanced_image
@@ -176,35 +196,5 @@ class pixelize(ctk.CTk):
         enhancer = ImageEnhance.Color(self.image)
         self.vibrant_image = enhancer.enhance(vibrance_float)
         return self.vibrant_image
-
-
-   # the function below tends to output better images compared to the current method
-   # but it's also much slower, might try to base the calculations on NumPy for a
-   # faster execution in the future ...
-
-
-   # def convert_to_pixel_art(self, image, pixel_size, color_palette):
-   #     # Resize the image to the desired pixel size
-   #     convert_resized_image = self.resize_image_pixelsize(image, pixel_size)
-   #
-   #     # Reduce the color palette
-   #     quantized_image = self.quantize_colors(convert_resized_image, color_palette)
-   #
-   #     # Adjust pixel values
-   #     pixel_art_image = quantized_image.convert("RGB")
-   #
-   #     # Create the final pixel art image
-   #     width, height = convert_resized_image.size
-   #     self.final_image = Image.new("RGB", (width * pixel_size, height * pixel_size))
-   #
-   #     for y in range(height):
-   #         for x in range(width):
-   #             pixel_color = pixel_art_image.getpixel((x, y))
-   #             for j in range(pixel_size):
-   #                 for i in range(pixel_size):
-   #                     self.final_image.putpixel((x * pixel_size + i, y * pixel_size + j), pixel_color)
-   #
-   #     return self.final_image
-
 
 pixelize()
