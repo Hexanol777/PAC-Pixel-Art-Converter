@@ -29,7 +29,7 @@ class Parameters(ctk.CTkFrame): # parameters tab
         SliderPanel(self, 'Color Vibrance', vibrance, 0, 300)
 
 
-        #AnalysisPanel(self)
+        AnalysisPanel(self)
 
 class SaveOptions(ctk.CTkFrame): # save options tab
     def __init__(self, parent, export_image):

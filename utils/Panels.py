@@ -113,26 +113,24 @@ class SaveButton(ctk.CTkButton):
             )
 
         
-class SuggestedValues(ctk.CTkLabel):
+class SuggestedValues(ctk.CTkFrame):
     def __init__(self, parent, text, suggested_value):
-        super().__init__(master = parent)
+        super().__init__(master=parent, fg_color=DARK_GREY)
 
-        ctk.CTkLabel(self, text = text).grid(column = 0, row = 0
-                                     , sticky = 'W'
-                                     , padx = 5)
-        
-        self.num_label = ctk.CTkLabel(self, text = suggested_value)
-        self.num_label.grid(column = 1, row = 0
-                            , sticky = 'E'
-                            , padx = 5)
-        self.pack(expand = True, fill = 'both')
+        ctk.CTkLabel(self, text=text).grid(column=0, row=0, sticky='W', padx=5)
+
+        self.num_label = ctk.CTkLabel(self, text=suggested_value)
+        self.num_label.grid(column=1, row=0, sticky='E', padx=5)
+        # Add weight to the second column to push the label to the right
+        self.grid_columnconfigure(1, weight=1)
+        self.pack(expand=True, fill='both')
 
 class AnalysisPanel(ctk.CTkFrame):
     def __init__(self, parent):
-        super().__init__(master = parent, fg_color= DARK_GREY)
-        self.pack(fill = 'x', side= 'bottom', pady = 4, ipady = 8)
+        super().__init__(master=parent, fg_color=DARK_GREY)
+        self.pack(fill='x', side='bottom', pady=4, ipady=8)
 
-        ctk.CTkLabel(self, text = "Suggested Values").pack(padx= 5)
+        ctk.CTkLabel(self, text="Suggested Values").pack(padx=5)
 
         SuggestedValues(self, 'Pixel Size', 5)
         SuggestedValues(self, 'Color Pallete', 5)
@@ -140,7 +138,7 @@ class AnalysisPanel(ctk.CTkFrame):
         SuggestedValues(self, 'Edge Sharpness', 5)
         SuggestedValues(self, 'Color Vibrance', 5)
 
-        ctk.CTkButton(master= self, text= 'Analyze Image', command=self.analyze_image).pack(pady = 10)
+        ctk.CTkButton(master=self, text='Analyze Image', command=self.analyze_image).pack(pady=10)
 
     def analyze_image(self):
         print('analyze')
