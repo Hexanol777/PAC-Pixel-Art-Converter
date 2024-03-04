@@ -8,7 +8,6 @@ from utils.menu import Menu
 import os
 
 
-
 class pixelize(ctk.CTk):
     def __init__(self):
 
@@ -98,7 +97,8 @@ class pixelize(ctk.CTk):
                          self.brightness,
                          self.sharpness, 
                          self.vibrance,
-                         self.export_image)
+                         self.export_image,
+                         self.original)
 
     def close_app(self):
         # removes the image from the frame
@@ -194,5 +194,6 @@ class pixelize(ctk.CTk):
         enhancer = ImageEnhance.Color(self.image)
         self.vibrant_image = enhancer.enhance(vibrance_float)
         return self.vibrant_image
+    
 
 pixelize()
