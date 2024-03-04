@@ -112,5 +112,24 @@ class SaveButton(ctk.CTkButton):
             self.path_string.get()
             )
 
+class ButtonPanel(ctk.CTkButton):
+    def __init__(self, parent, image, pixle_slider, color_pallet, brightness, edge_sharpness, color_vibrance):
+        self.image = image
+        
+        self.pixel_slider = pixle_slider
+        self.color_pallet = color_pallet
+        self.brightness = brightness
+        self.edge_sharpness = edge_sharpness
+        self.color_vibrance = color_vibrance
+        
+        super().__init__(master = parent, text="auto values", command=self.auto)   
+        self.pack()
+
+    def auto(self):
+        self.pixel_slider.set(self.image.size[0] // 120)
+        self.color_pallet.set(50)
+        self.brightness.set(100)
+        self.edge_sharpness.set(10)
+        self.color_vibrance.set(100)
 
 
