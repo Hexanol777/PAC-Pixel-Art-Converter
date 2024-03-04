@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from Settings import *
 from tkinter import filedialog
+from auto_value import *
 
 
 
@@ -17,7 +18,7 @@ class ImagePanel(ctk.CTkFrame): # where the image lies
 class SliderPanel(Panel): # logic for the panel used in Sliders
     def __init__(self, parent, text, data_var, min_value, max_value):
         super().__init__(parent = parent)
-
+        self.data_var = data_var
         # layout
         self.rowconfigure((0,1), weight = 1)
         self.columnconfigure((0,1), weight = 1)
@@ -44,6 +45,10 @@ class SliderPanel(Panel): # logic for the panel used in Sliders
 
     def update_text(self, value):
         self.num_label.configure(text = f'{round(value, 0)}')
+
+    def update_text_and_value(self, value):
+        self.update_text(value)
+        self.data_var.set(value)
 
 class FileNamePanel(Panel):
     def __init__(self, parent, name_string, file_string):
@@ -114,7 +119,7 @@ class SaveButton(ctk.CTkButton):
 
         
 class SuggestedValues(ctk.CTkFrame):
-    def __init__(self, parent, text, suggested_value):
+    def __init__(self, parent, text, suggested_value = "--"):
         super().__init__(master=parent, fg_color=DARK_GREY)
 
         ctk.CTkLabel(self, text=text).grid(column=0, row=0, sticky='W', padx=5)
@@ -124,21 +129,31 @@ class SuggestedValues(ctk.CTkFrame):
         # Add weight to the second column to push the label to the right
         self.grid_columnconfigure(1, weight=1)
         self.pack(expand=True, fill='both')
+    
+    def update_values(self):
+        print('haro')
+
 
 class AnalysisPanel(ctk.CTkFrame):
-    def __init__(self, parent):
+    def __init__(self, parent, image):
         super().__init__(master=parent, fg_color=DARK_GREY)
         self.pack(fill='x', side='bottom', pady=4, ipady=8)
+        self.image = image
 
         ctk.CTkLabel(self, text="Suggested Values").pack(padx=5)
 
-        SuggestedValues(self, 'Pixel Size', 5)
-        SuggestedValues(self, 'Color Pallete', 5)
-        SuggestedValues(self, 'Brightness', 5)
-        SuggestedValues(self, 'Edge Sharpness', 5)
-        SuggestedValues(self, 'Color Vibrance', 5)
+        self.analyze_image()
+
+        SuggestedValues(self, 'Pixel Size', self.closest_pixel_size)
+        SuggestedValues(self, 'Color Pallete', self.closest_palette)
+        SuggestedValues(self, 'Brightness', self.closest_brightness)
+        SuggestedValues(self, 'Edge Sharpness', self.closest_sharpness)
+        SuggestedValues(self, 'Color Vibrance', self.closest_vibrance)
 
         ctk.CTkButton(master=self, text='Analyze Image', command=self.analyze_image).pack(pady=10)
 
     def analyze_image(self):
-        print('analyze')
+        self.closest_pixel_size, self.closest_sharpness = find_closest_pixelsize(self.image.width, self.image.height)
+        self.closest_brightness, self.closest_vibrance, self.closest_palette = find_closest_color_palette(self.image)
+        print(self.closest_pixel_size, self.closest_sharpness, self.closest_brightness, self.closest_vibrance, self.closest_palette)
+

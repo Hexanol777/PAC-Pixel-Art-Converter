@@ -99,7 +99,8 @@ class pixelize(ctk.CTk):
                          self.brightness,
                          self.sharpness, 
                          self.vibrance,
-                         self.export_image
+                         self.export_image,
+                         self.original
                          )
 
     def close_app(self):
