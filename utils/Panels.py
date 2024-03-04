@@ -1,20 +1,21 @@
 import customtkinter as ctk
 from Settings import *
-from tkinter import filedialog
+from tkinter import filedialog, font
+
 
 
 
 class Panel(ctk.CTkFrame):
-    def __init__(self, parent): # main panel
-        super().__init__(master = parent, fg_color = DARK_GREY)
-        self.pack(fill = 'x', pady = 4, ipady = 8)
-
-class ImagePanel(ctk.CTkFrame): # where the image lies 
     def __init__(self, parent):
         super().__init__(master = parent, fg_color = DARK_GREY)
         self.pack(fill = 'x', pady = 4, ipady = 8)
 
-class SliderPanel(Panel): # logic for the panel used in Sliders
+class ImagePanel(ctk.CTkFrame):
+    def __init__(self, parent):
+        super().__init__(master = parent, fg_color = DARK_GREY)
+        self.pack(fill = 'x', pady = 4, ipady = 8)
+
+class SliderPanel(Panel):
     def __init__(self, parent, text, data_var, min_value, max_value):
         super().__init__(parent = parent)
 
@@ -31,6 +32,8 @@ class SliderPanel(Panel): # logic for the panel used in Sliders
                             , sticky = 'E'
                             , padx = 5)
 
+        self.data_var = data_var 
+
         ctk.CTkSlider(self,
                       fg_color = SLIDER_BG,
                       variable=data_var,
@@ -44,6 +47,12 @@ class SliderPanel(Panel): # logic for the panel used in Sliders
 
     def update_text(self, value):
         self.num_label.configure(text = f'{round(value, 0)}')
+
+    def update_text_and_value(self, value):
+        self.update_text(value)
+        self.data_var.set(value)
+        
+
 
 class FileNamePanel(Panel):
     def __init__(self, parent, name_string, file_string):
@@ -112,7 +121,25 @@ class SaveButton(ctk.CTkButton):
             self.path_string.get()
             )
 
+class ButtonPanel(ctk.CTkButton):
+    def __init__(self, parent, image, pixle_slider, color_pallet, brightness, edge_sharpness, color_vibrance):
+        self.image = image
+        
+        self.pixel_slider = pixle_slider
+        self.color_pallet = color_pallet
+        self.brightness = brightness
+        self.edge_sharpness = edge_sharpness
+        self.color_vibrance = color_vibrance
+        
+        super().__init__(master = parent, text="auto values", command=self.auto)   
+        self.pack()
+
+    def auto(self):
+        self.pixel_slider.update_text_and_value(self.image.size[0] // 120)
+        self.color_pallet.update_text_and_value(50)
+        self.brightness.update_text_and_value(100)
+        self.edge_sharpness.update_text_and_value(10)
+        self.color_vibrance.update_text_and_value(100)
+        
 
 
-    def analyze_image(self):
-        print('analyze')

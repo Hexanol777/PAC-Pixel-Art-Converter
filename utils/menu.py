@@ -2,7 +2,7 @@ import customtkinter as ctk
 from Panels import *
 
 class Menu(ctk.CTkTabview):
-    def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, export_image):
+    def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, export_image, image):
         super().__init__(master = parent)
         self.grid(row = 0, column = 0, sticky = 'nsew', pady = 10 , padx = 10)
 
@@ -15,16 +15,16 @@ class Menu(ctk.CTkTabview):
         SaveOptions(self.tab('Save Options'), export_image)
 
 class Parameters(ctk.CTkFrame):
-    def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance):
+    def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, image):
         super().__init__(master = parent, fg_color= 'transparent')
         self.pack(expand = True, fill = 'both')
 
-        SliderPanel(self, 'Pixel Size', pixel_size, 1, 20)
-        SliderPanel(self, 'Color Palette', color_palette, 5, 100)
-        SliderPanel(self, 'Brightness', brightness, 0, 200)
-        SliderPanel(self, 'Edge Sharpness', sharpness, 0, 20)
-        SliderPanel(self, 'Color Vibrance', vibrance, 0, 300)
-        ButtonPanel(self, image ,pixel_size, color_palette, brightness, sharpness, vibrance)
+        p_panel = SliderPanel(self, 'Pixel Size', pixel_size, 1, 20)
+        cp_panel = SliderPanel(self, 'Color Palette', color_palette, 5, 100)
+        b_panel = SliderPanel(self, 'Brightness', brightness, 0, 200)
+        s_panel = SliderPanel(self, 'Edge Sharpness', sharpness, 0, 20)
+        v_panel = SliderPanel(self, 'Color Vibrance', vibrance, 0, 300)
+        ButtonPanel(self, image , p_panel, cp_panel, b_panel, s_panel, v_panel)
 
 
         AnalysisPanel(self)
