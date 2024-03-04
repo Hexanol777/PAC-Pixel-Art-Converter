@@ -1,20 +1,20 @@
 import customtkinter as ctk
 from Settings import *
-from tkinter import filedialog, font
+from tkinter import filedialog
 
 
 
 class Panel(ctk.CTkFrame):
+    def __init__(self, parent): # main panel
+        super().__init__(master = parent, fg_color = DARK_GREY)
+        self.pack(fill = 'x', pady = 4, ipady = 8)
+
+class ImagePanel(ctk.CTkFrame): # where the image lies 
     def __init__(self, parent):
         super().__init__(master = parent, fg_color = DARK_GREY)
         self.pack(fill = 'x', pady = 4, ipady = 8)
 
-class ImagePanel(ctk.CTkFrame):
-    def __init__(self, parent):
-        super().__init__(master = parent, fg_color = DARK_GREY)
-        self.pack(fill = 'x', pady = 4, ipady = 8)
-
-class SliderPanel(Panel):
+class SliderPanel(Panel): # logic for the panel used in Sliders
     def __init__(self, parent, text, data_var, min_value, max_value):
         super().__init__(parent = parent)
 
@@ -112,24 +112,7 @@ class SaveButton(ctk.CTkButton):
             self.path_string.get()
             )
 
-class ButtonPanel(ctk.CTkButton):
-    def __init__(self, parent, image, pixle_slider, color_pallet, brightness, edge_sharpness, color_vibrance):
-        self.image = image
-        
-        self.pixel_slider = pixle_slider
-        self.color_pallet = color_pallet
-        self.brightness = brightness
-        self.edge_sharpness = edge_sharpness
-        self.color_vibrance = color_vibrance
-        
-        super().__init__(master = parent, text="auto values", command=self.auto)   
-        self.pack()
-
-    def auto(self):
-        self.pixel_slider.set(self.image.size[0] // 120)
-        self.color_pallet.set(50)
-        self.brightness.set(100)
-        self.edge_sharpness.set(10)
-        self.color_vibrance.set(100)
 
 
+    def analyze_image(self):
+        print('analyze')

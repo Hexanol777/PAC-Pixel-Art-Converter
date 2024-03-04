@@ -14,7 +14,7 @@ class pixelize(ctk.CTk):
         # setup
         super().__init__()
         ctk.set_appearance_mode('system')
-        self.geometry('900x600')
+        self.geometry('1100x750')
         self.minsize(900, 600)
 
         try:
@@ -76,6 +76,7 @@ class pixelize(ctk.CTk):
         self.parameter_values = f'{round(self.pixel_size.get())}' \
                                 f' - {round(self.color_palette.get())}' \
                                 f' - {round(self.brightness.get())}' \
+                                f' - {round(self.sharpness.get())}' \
                                 f' - {round(self.vibrance.get())}' 
 
         self.place_image()
@@ -162,7 +163,8 @@ class pixelize(ctk.CTk):
         self.new_height = self.image.size[0] // round(pixel_size)
 
         self.resized_img_pixelsize = image.resize((self.new_width, 
-                                                   self.new_height), Image.NEAREST)
+                                                   self.new_height),
+                                                    Image.LANCZOS)
         return self.resized_img_pixelsize
 
     def quantize_colors(self, image, color_palette):

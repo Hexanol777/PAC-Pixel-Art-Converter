@@ -2,11 +2,11 @@ import customtkinter as ctk
 from Panels import *
 
 class Menu(ctk.CTkTabview):
-    def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, export_image, image):
+    def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, export_image):
         super().__init__(master = parent)
         self.grid(row = 0, column = 0, sticky = 'nsew', pady = 10 , padx = 10)
 
-        # tabs
+        # tabs, new tabs get added here
         self.add('Parameters')
         self.add('Save Options')
 
@@ -15,7 +15,7 @@ class Menu(ctk.CTkTabview):
         SaveOptions(self.tab('Save Options'), export_image)
 
 class Parameters(ctk.CTkFrame):
-    def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, image):
+    def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance):
         super().__init__(master = parent, fg_color= 'transparent')
         self.pack(expand = True, fill = 'both')
 
@@ -26,7 +26,10 @@ class Parameters(ctk.CTkFrame):
         SliderPanel(self, 'Color Vibrance', vibrance, 0, 300)
         ButtonPanel(self, image ,pixel_size, color_palette, brightness, sharpness, vibrance)
 
-class SaveOptions(ctk.CTkFrame):
+
+        AnalysisPanel(self)
+
+class SaveOptions(ctk.CTkFrame): # save options tab
     def __init__(self, parent, export_image):
         super().__init__(master = parent, fg_color= 'transparent')
         self.pack(expand = True, fill = 'both')
