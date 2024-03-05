@@ -99,7 +99,8 @@ class pixelize(ctk.CTk):
                          self.brightness,
                          self.sharpness, 
                          self.vibrance,
-                         self.export_image
+                         self.export_image,
+                         self.original
                          )
 
     def close_app(self):
@@ -164,7 +165,8 @@ class pixelize(ctk.CTk):
         self.new_height = self.image.size[0] // round(pixel_size)
 
         self.resized_img_pixelsize = image.resize((self.new_width, 
-                                                   self.new_height), Image.LANCZOS)
+                                                   self.new_height),
+                                                    Image.LANCZOS)
         return self.resized_img_pixelsize
 
     def quantize_colors(self, image, color_palette):

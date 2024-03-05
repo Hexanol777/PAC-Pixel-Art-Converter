@@ -160,7 +160,7 @@ class pixelize(ctk.CTk):
     def resize_image_pixelsize(self, image, pixel_size):
         # Resize the image to the desired pixel size
         self.image = self.image.convert("RGB")
-        
+
         self.new_width = self.image.size[1] // round(pixel_size)
         self.new_height = self.image.size[0] // round(pixel_size)
 
