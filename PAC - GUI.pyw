@@ -5,8 +5,8 @@ from utils.image_widgets import *
 from PIL import Image, ImageTk, ImageEnhance
 from utils.Settings import *
 from utils.menu import Menu
-import os
-
+import os, json
+from utils.auto_value import data, count_colors
 
 
 class pixelize(ctk.CTk):
@@ -151,7 +151,35 @@ class pixelize(ctk.CTk):
                                        image=self.image_tk)
 
     def export_image(self, name, file, path):
-        export_string = f'{path}/{name} - {self.parameter_values}.{file}'
+        export_string = f'{path}/{name} - {self.parameter_values}.{file}' # Formatting the string
+
+        # Extract values from the name
+        pixel_size, color_palette, brightness, sharpness, vibrance = map(int, self.parameter_values.split(' - '))
+
+        # Additoinal values from the image object
+        width, height = self.image.size
+        aspect_ratio = width / height
+        colors = count_colors(self.image)
+
+        # dict to append to data
+        appending_parameters = {
+            'Width': width,
+            'Height': height,
+            'Aspect_Ratio': aspect_ratio,
+            'Pixel_Size': pixel_size,
+            'Colors': colors,
+            'Color_Palette': color_palette,
+            'Brightness': brightness,
+            'Sharpness': sharpness,
+            'Vibrance': vibrance
+            }
+
+        for key, value in appending_parameters.items():
+            data[key].append(value)
+            print(value)
+
+        with open('utils/data.json', 'w') as file:
+            json.dump(data, file)
 
         self.image = self.image.resize((self.original.width, 
                                         self.original.height))
@@ -160,7 +188,7 @@ class pixelize(ctk.CTk):
     def resize_image_pixelsize(self, image, pixel_size):
         # Resize the image to the desired pixel size
         self.image = self.image.convert("RGB")
-        
+
         self.new_width = self.image.size[1] // round(pixel_size)
         self.new_height = self.image.size[0] // round(pixel_size)
 
