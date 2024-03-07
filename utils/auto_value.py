@@ -1,4 +1,5 @@
 import math
+import json
 
 data = {
     'Width': [1098, 1200, 1000, 3999, 1889, 3612, 1000, 1893, 1280, 1421, 1280, 1024, 973, 1750, 2194, 3334, 3334, 1700, 1920, 1280, 2000, 2500, 3508, 1920, 1000, 1640, 1679, 1200, 2500, 2000, 6000, 2327, 1000, 2048, 3857, 2000, 1920, 1414, 1980, 3840, 1059, 600, 1788, 2048, 3627, 4000, 1277, 1295, 2048, 2160, 2480, 1300, 3297, 4800, 1500, 1273, 1920, 1053, 2269, 1000, 1920, 2500, 1920, 1000, 1920, 1600, 1200, 1920, 346, 3000, 2411, 3584, 2916, 4096, 1440, 1920, 1722, 1440, 2319, 2150, 2150, 719],
@@ -34,7 +35,7 @@ def find_closest_pixelsize(width, height):
             closest_distance = current_distance
             closest_pixel_size = pixel_size
             closest_sharpness = sharpness
-            
+    print(closest_pixel_size, closest_sharpness)
     return closest_pixel_size, closest_sharpness
 
 def count_colors(image):
