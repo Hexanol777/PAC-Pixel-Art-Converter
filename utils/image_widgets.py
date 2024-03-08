@@ -10,7 +10,9 @@ class ImageImport(ctk.CTkFrame):
                   row = 0 , sticky = 'nsew')
         self.import_func = import_func
 
-        ctk.CTkButton(self, text='Import', command=self.open_dialog).pack(expand=True)
+        ctk.CTkButton(self, text='Import', command=self.open_dialog, 
+                      corner_radius=10, border_width=0.75, 
+                      border_color=BORDER).pack(expand=True)
 
     def open_dialog(self):
         path = filedialog.askopenfile().name
@@ -39,6 +41,8 @@ class CloseOutput(ctk.CTkButton):
                          command=close_func,
                          fg_color='transparent',
                          hover_color=CLOSE_RED,
-                         corner_radius= 0,
-                         width=40, height=40)
+                         corner_radius= 10,
+                         width=40, height=40,
+                         border_width= 0.75,
+                         border_color=CLOSE_BORDER)
         self.place(relx = 0.99, rely = 0.01, anchor = 'ne')

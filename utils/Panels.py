@@ -7,7 +7,7 @@ from auto_value import *
 
 class Panel(ctk.CTkFrame):
     def __init__(self, parent): # main panel
-        super().__init__(master = parent, fg_color = DARK_GREY)
+        super().__init__(master = parent, fg_color = DARK_GREY, border_width = 0.75, border_color = BORDER, corner_radius=10)
         self.pack(fill = 'x', pady = 4, ipady = 8)
 
 class ImagePanel(ctk.CTkFrame): # where the image lies 
@@ -25,12 +25,12 @@ class SliderPanel(Panel): # logic for the panel used in Sliders
 
         ctk.CTkLabel(self, text = text).grid(column = 0, row = 0
                                              , sticky = 'W'
-                                             , padx = 5)
+                                             , padx = 10)
         
         self.num_label = ctk.CTkLabel(self, text = data_var.get())
         self.num_label.grid(column = 1, row = 0
                             , sticky = 'E'
-                            , padx = 5)
+                            , padx = 10)
 
         ctk.CTkSlider(self,
                       fg_color = SLIDER_BG,
@@ -134,7 +134,7 @@ class SuggestedValues(ctk.CTkFrame):
 class AnalysisPanel(Panel):
     def __init__(self, parent, image, pixel_size, color_palette, brightness, sharpness, vibrance):
         super().__init__(parent=parent)
-        self.pack(fill='x', side='bottom', pady=4, ipady=8)
+        self.pack(fill='x', side='bottom', pady=5, ipady=8)
         self.image = image
 
         ctk.CTkLabel(self, text="Suggested Values").pack(padx=5)
@@ -154,7 +154,7 @@ class AnalysisPanel(Panel):
         
 class SetSuggested(ctk.CTkButton):
     def __init__(self, parent, image, pixel_size, color_palette, brightness, sharpness, vibrance):
-        super().__init__(master = parent, text= 'Set Values', command=self.set_values)
+        super().__init__(master = parent, text= 'Set Values', command=self.set_values, border_width=0.75, border_color=BORDER)
 
         self.image = image
         self.pixel_slider = pixel_size
