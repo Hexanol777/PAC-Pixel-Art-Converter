@@ -7,6 +7,7 @@ from utils.Settings import *
 from utils.menu import Menu
 import os, json
 from utils.auto_value import data, count_colors
+from utils.image_funcs import *
 
 
 class pixelize(ctk.CTk):
@@ -64,15 +65,15 @@ class pixelize(ctk.CTk):
         self.image = self.original
 
         # resize the image to the desired pixel size
-        self.image = self.resize_image_pixelsize(self.image, self.pixel_size.get())
+        self.image = resize_image_pixelsize(self.image, self.pixel_size.get())
         # Changes the amount of present colors in the image
-        self.image = self.quantize_colors(self.image, self.color_palette.get())
+        self.image = quantize_colors(self.image, self.color_palette.get())
         # manipulates the bright of each pixel individually
-        self.image = self.adjust_brightness(self.image, self.brightness.get())
+        self.image = adjust_brightness(self.image, self.brightness.get())
         # changes the color vibrancy
-        self.image = self.adjust_vibrance(self.image, self.vibrance.get())
+        self.image = adjust_vibrance(self.image, self.vibrance.get())
         # adjusts the level of sharpness of the edges
-        self.image = self.enhance_sharpness(self.image, self.sharpness.get())
+        self.image = enhance_sharpness(self.image, self.sharpness.get())
 
         self.parameter_values = f'{round(self.pixel_size.get())}' \
                                 f' - {round(self.color_palette.get())}' \
@@ -184,47 +185,5 @@ class pixelize(ctk.CTk):
         self.image = self.image.resize((self.original.width, 
                                         self.original.height))
         self.image.save(export_string)
-
-    def resize_image_pixelsize(self, image, pixel_size):
-        # Resize the image to the desired pixel size
-        self.image = self.image.convert("RGB")
-
-        self.new_width = self.image.size[1] // round(pixel_size)
-        self.new_height = self.image.size[0] // round(pixel_size)
-
-        self.resized_img_pixelsize = image.resize((self.new_width, 
-                                                   self.new_height),
-                                                    Image.LANCZOS)
-        return self.resized_img_pixelsize
-
-    def quantize_colors(self, image, color_palette):
-        # Reduce the color palette
-        self.image = self.image.convert("RGB")
-        self.quantized_image = self.image.quantize(colors=round(color_palette))
-        return self.quantized_image
-
-    def adjust_brightness(self, image, brightness_factor):
-        # Adjust the brightness of the image
-        self.image = self.image.convert("RGB")
-        brightness_float = brightness_factor / 100
-        enhancer = ImageEnhance.Brightness(self.image)
-        self.adjusted_image = enhancer.enhance(brightness_float)
-        return self.adjusted_image
-
-    def enhance_sharpness(self, image, sharpness_factor): 
-        # Enhance the sharpness of the image
-        self.image = self.image.convert("RGB")
-        sharpness_factor = sharpness_factor / 10
-        enhancer = ImageEnhance.Sharpness(self.image)
-        self.enhanced_image = enhancer.enhance(sharpness_factor)
-        return self.enhanced_image
-
-    def adjust_vibrance(self, image, vibrance_factor):
-        # Adjust the vibrance of the image
-        self.image = self.image.convert("RGB")
-        vibrance_float = vibrance_factor / 100
-        enhancer = ImageEnhance.Color(self.image)
-        self.vibrant_image = enhancer.enhance(vibrance_float)
-        return self.vibrant_image
 
 pixelize()

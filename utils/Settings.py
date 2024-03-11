@@ -14,4 +14,4 @@ BORDER = '#1f6aaf'           # Darker blue color for the Panel border
 DARK_GREY = '#2c3e50'        # Dark grey for certain UI elements
 CLOSE_RED = '#e74c3c'        # Red for close or delete buttons
 CLOSE_BORDER = '#c0392b'      # Border for the close button
-SLIDER_BG = '#34495e'        # Dark blue for sliders or progress bars
+SLIDER_BG = '#34495e'        # Dark blue for sliders or progress
