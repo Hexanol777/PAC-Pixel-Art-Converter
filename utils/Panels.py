@@ -150,7 +150,6 @@ class AnalysisPanel(Panel):
     def analyze_image(self):
         self.closest_pixel_size, self.closest_sharpness = find_closest_pixelsize(self.image.width, self.image.height)
         self.closest_brightness, self.closest_vibrance, self.closest_palette = find_closest_color_palette(self.image)
-        print(self.closest_pixel_size, self.closest_sharpness, self.closest_brightness, self.closest_vibrance, self.closest_palette)
         
 class SetSuggested(ctk.CTkButton):
     def __init__(self, parent, image, pixel_size, color_palette, brightness, sharpness, vibrance):

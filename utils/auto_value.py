@@ -35,7 +35,6 @@ def find_closest_pixelsize(width, height):
             closest_distance = current_distance
             closest_pixel_size = pixel_size
             closest_sharpness = sharpness
-    print(closest_pixel_size, closest_sharpness)
     return closest_pixel_size, closest_sharpness
 
 def count_colors(image):

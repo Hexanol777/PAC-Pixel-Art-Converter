@@ -177,7 +177,6 @@ class pixelize(ctk.CTk):
 
         for key, value in appending_parameters.items():
             data[key].append(value)
-            print(value)
 
         with open('utils/data.json', 'w') as file:
             json.dump(data, file)
