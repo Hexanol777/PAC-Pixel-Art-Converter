@@ -1,6 +1,8 @@
 from image_funcs import quantize_colors, adjust_brightness, enhance_sharpness, adjust_vibrance
 from PIL import Image
 import imageio
+import numpy as np
+import cv2
 
 def resize_video_pixelsize(image, pixel_size):
     # Resize the image to the desired pixel size
@@ -56,3 +58,21 @@ def create_video(images, output_file, fps=30):
         writer.append_data(img_data)
     
     writer.close()
+
+def process_video(video_path, output_video_path, pixel_size, color_palette, brightness_factor, sharpness_factor, vibrance_factor):
+
+    frame_list = extract_frames(video_path)
+    transformed_frames = []
+
+    for frame in frame_list:
+        # Apply the pipeline to the frame
+        frame = resize_video_pixelsize(frame, pixel_size)
+        frame = quantize_colors(frame, color_palette)
+        frame = adjust_brightness(frame, brightness_factor)
+        frame = enhance_sharpness(frame, sharpness_factor)
+        frame = adjust_vibrance(frame, vibrance_factor)
+        # Append to list
+        transformed_frames.append(frame)
+
+    # Generate video
+    create_video(transformed_frames, output_video_path)
