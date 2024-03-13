@@ -1,32 +1,39 @@
-import cv2
+from image_funcs import quantize_colors, adjust_brightness, enhance_sharpness, adjust_vibrance
+from PIL import Image
 
-def pixelize_video(video, pixel_size=10):
+def resize_video_pixelsize(image, pixel_size):
+    # Resize the image to the desired pixel size
+    image = image.convert("RGB")
+    width, height = image.size
+    new_width = width // pixel_size
+    new_height = height // pixel_size
+    resized_img_pixelsize = image.resize((new_width, new_height), Image.NEAREST)
+    final_resized_img = resized_img_pixelsize.resize((width, height), Image.NEAREST)
+    return final_resized_img
 
-    video_capture = cv2.VideoCapture(input_video_path)
 
-    # Get video properties
-    frame_width = int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
-    frame_height = int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    fps = int(video_capture.get(cv2.CAP_PROP_FPS))
-
-    # idk what this is tbh
-    fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    video_writer = cv2.VideoWriter(output_video_path, fourcc, fps, (frame_width, frame_height))
-
-    # Read video
-    while video_capture.isOpened():
-        ret, frame = video_capture.read()
-
-        if not ret:
+def extract_frames(video_path):
+    frames = []
+    # Open the video
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        print("Error: Unable to open video file")
+        return frames
+    
+    # Reading till the video is complete
+    while cap.isOpened():
+        # Capture frames
+        ret, frame = cap.read()
+        if ret:
+            # Convert colors
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            # Convert the np array to pil
+            image = Image.fromarray(frame_rgb)
+            # Append the image
+            frames.append(image)
+        else:
             break
-
-        # Pixelization effect
-        small_frame = cv2.resize(frame, None, fx=1.0/pixel_size, fy=1.0/pixel_size, interpolation=cv2.INTER_NEAREST)
-        pixelized_frame = cv2.resize(small_frame, (frame_width, frame_height), interpolation=cv2.INTER_NEAREST)
-
-        # Write the pixelized frames
-        video_writer.write(pixelized_frame)
-
+    
     # Release the video
-    video_capture.release()
-    video_writer.release()
+    cap.release()
+    return frames
