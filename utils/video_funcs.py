@@ -1,5 +1,6 @@
 from image_funcs import quantize_colors, adjust_brightness, enhance_sharpness, adjust_vibrance
 from PIL import Image
+import imageio
 
 def resize_video_pixelsize(image, pixel_size):
     # Resize the image to the desired pixel size
@@ -37,3 +38,21 @@ def extract_frames(video_path):
     # Release the video
     cap.release()
     return frames
+
+def create_video(images, output_file, fps=30):
+    """
+    Combine a list of PIL.Image objects into a video.
+
+    Parameters:
+        images (list): Has to be a list of PIL.Image objects.
+        output_file (str): Path to the output video file, passed by another func.
+        fps (int): Frames per second for the output video. Default is 30.
+    """
+    writer = imageio.get_writer(output_file, fps=fps)
+    
+    for img in images:
+        img = img.convert("RGB")
+        img_data = np.array(img)
+        writer.append_data(img_data)
+    
+    writer.close()
