@@ -58,7 +58,7 @@ PAC (Pixel Art Converter) is a simple GUI application that allows you to convert
 
 The exported images are structured in the below formatting scheme:
 
-`NameGivenByUser` - `pixel_size` - `color_palette` - `brightness` - `vibrance`
+`NameGivenByUser` - `pixel_size` - `color_palette` - `brightness` - `sharpness` - `vibrance`
 
 Image name serves as a record of the specific parameter values used during the image generation
 ## Future Enhancements
