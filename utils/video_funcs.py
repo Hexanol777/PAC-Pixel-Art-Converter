@@ -19,6 +19,7 @@ def extract_frames(video_path):
     frames = []
     # Open the video
     cap = cv2.VideoCapture(video_path)
+    fps = cap.get(cv2.CAP_PROP_FPS)
     if not cap.isOpened():
         print("Error: Unable to open video file")
         return frames
@@ -39,16 +40,16 @@ def extract_frames(video_path):
     
     # Release the video
     cap.release()
-    return frames
+    return frames, fps
 
-def create_video(images, output_file, fps=30):
+def create_video(images, output_file, fps=60):
     """
     Combine a list of PIL.Image objects into a video.
 
     Parameters:
         images (list): Has to be a list of PIL.Image objects.
         output_file (str): Path to the output video file, passed by another func.
-        fps (int): Frames per second for the output video. Default is 30.
+        fps (int): Frames per second for the output video. Default is 60.
     """
     writer = imageio.get_writer(output_file, fps=fps)
     
@@ -61,7 +62,7 @@ def create_video(images, output_file, fps=30):
 
 def process_video(video_path, output_video_path, pixel_size, color_palette, brightness_factor, sharpness_factor, vibrance_factor):
 
-    frame_list = extract_frames(video_path)
+    frame_list, fps = extract_frames(video_path)
     transformed_frames = []
 
     for frame in frame_list:
@@ -75,4 +76,4 @@ def process_video(video_path, output_video_path, pixel_size, color_palette, brig
         transformed_frames.append(frame)
 
     # Generate video
-    create_video(transformed_frames, output_video_path)
+    create_video(transformed_frames, output_video_path, fps)
