@@ -3,6 +3,7 @@ sys.path.append("utils")
 import customtkinter as ctk
 from utils.image_widgets import *
 from PIL import Image, ImageTk, ImageEnhance
+from tkVideoPlayer import TkinterVideo
 from utils.Settings import *
 from utils.menu import Menu
 import os, json
@@ -39,6 +40,7 @@ class pixelize(ctk.CTk):
 
         # widgets
         self.image_import = ImageImport(self, self.import_image)
+        #self.video_import = VideoImport(self, self.import_video)
 
         # run
         self.mainloop()
@@ -85,16 +87,22 @@ class pixelize(ctk.CTk):
 
 
     def import_image(self, path):
-        self.original = Image.open(path)
-        self.image = self.original
-        self.image_title = os.path.splitext(os.path.basename(path))[0]  # extract the image title without the extention
-        self.image_ratio = self.image.size[0] / self.image.size[1]
-        self.image_tk = ImageTk.PhotoImage(self.image)
-
+        self.video_path = path
         self.image_import.grid_forget()
-        self.image_output = ImageOutput(self, self.resize_image)
-        self.close_button = CloseOutput(self, self.close_app)
+        if path.endswith(('.mp4', '.avi', '.mov', '.mkv', '.gif')):
+            self.video_output = VideoOutput(self, self.place_video, path)
+            self.original = self.video_output.video_player.load(path)
+            
+        else:
+            self.original = Image.open(path)
+            self.image = self.original
+            self.image_title = os.path.splitext(os.path.basename(path))[0]  # extract the image title without the extention
+            self.image_ratio = self.image.size[0] / self.image.size[1]
+            self.image_tk = ImageTk.PhotoImage(self.image)
+            self.image_output = ImageOutput(self, self.resize_image)
 
+        
+        self.close_button = CloseOutput(self, self.close_app)
         self.menu = Menu(self, self.pixel_size,
                          self.color_palette,
                          self.brightness,
@@ -103,6 +111,7 @@ class pixelize(ctk.CTk):
                          self.export_image,
                          self.original
                          )
+    
 
     def close_app(self):
         # removes the image from the frame
@@ -184,5 +193,9 @@ class pixelize(ctk.CTk):
         self.image = self.image.resize((self.original.width, 
                                         self.original.height))
         self.image.save(export_string)
+
+    def place_video(self):
+        self.video_output.video_player.load(self.video_path)
+        self.video_output.video_player.play()
 
 pixelize()
