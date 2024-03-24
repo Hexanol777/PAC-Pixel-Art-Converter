@@ -57,7 +57,9 @@ class VideoOutput(ctk.CTkFrame):
         self.progress_slider.set(-1)
         self.progress_slider.grid(row=1, column=1, sticky='nsew', padx=10, pady=10)
 
-        self.play_pause_btn = ctk.CTkButton(master=parent, text="Play ►", command=self.play_pause)
+        self.play_pause_btn = ctk.CTkButton(master=parent, text="Play ►", command=self.play_pause,
+                                                corner_radius=10, border_width=0.75, 
+                                                border_color=BORDER)
         self.play_pause_btn.grid(row=1, column=0, sticky='nsew', padx=10, pady=10)
 
     def update_duration(self, event):
@@ -69,7 +71,7 @@ class VideoOutput(ctk.CTkFrame):
 
     def update_scale(self, event):
         try:
-            self.progress_slider.set(int(self.current_duration()))
+            self.progress_slider.set(int(self.video_player.current_duration()))
         except:
             pass
 

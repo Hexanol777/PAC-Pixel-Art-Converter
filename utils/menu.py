@@ -27,9 +27,9 @@ class Parameters(ctk.CTkFrame): # parameters tab
         sharpness_panel = SliderPanel(self, 'Edge Sharpness', sharpness, 0, 20)
         vibrance_panel = SliderPanel(self, 'Color Vibrance', vibrance, 0, 300)
 
-        SetSuggested(self, image, pixel_panel, palette, brightness_panel, sharpness_panel, vibrance_panel)
-
-        AnalysisPanel(self, image, pixel_size, color_palette, brightness, sharpness, vibrance)
+        if image is not None:
+            SetSuggested(self, image, pixel_panel, palette, brightness_panel, sharpness_panel, vibrance_panel)    
+            AnalysisPanel(self, image, pixel_size, color_palette, brightness, sharpness, vibrance)
 
 class SaveOptions(ctk.CTkFrame): # save options tab
     def __init__(self, parent, export_image):
