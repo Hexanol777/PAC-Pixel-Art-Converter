@@ -21,7 +21,7 @@ class Parameters(ctk.CTkFrame): # parameters tab
         super().__init__(master = parent, fg_color= 'transparent')
         self.pack(expand = True, fill = 'both')
 
-        if image is not None:
+        if image.endswith(('.jpg', '.jpeg', '.png')):
             pixel_panel = SliderPanel(self, 'Pixel Size', pixel_size, 1, 20)
             palette = SliderPanel(self, 'Color Palette', color_palette, 5, 100)
             brightness_panel = SliderPanel(self, 'Brightness', brightness, 0, 200)
@@ -36,6 +36,7 @@ class Parameters(ctk.CTkFrame): # parameters tab
             VideoValueEntry(self, 'Brightness', brightness)
             VideoValueEntry(self, 'Edge Sharpness', sharpness)
             VideoValueEntry(self, 'Color Vibrance', vibrance)
+            ApplyValuesButton(self, image, pixel_size, color_palette, brightness, sharpness, vibrance)
 
 class SaveOptions(ctk.CTkFrame): # save options tab
     def __init__(self, parent, export_image):

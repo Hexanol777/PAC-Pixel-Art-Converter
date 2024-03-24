@@ -85,13 +85,16 @@ class pixelize(ctk.CTk):
 
         self.place_image()
 
+    def manipulate_video(self, *args):
+        pass
 
     def import_image(self, path):
-        self.video_path = path
         self.image_import.grid_forget()
         if path.endswith(('.mp4', '.avi', '.mov', '.mkv', '.gif')):
             self.video_output = VideoOutput(self, self.placevid, path)
-            self.original = self.video_output.video_player.load(path)
+            self.original = path
+            print(self.original)
+            self.placevid()
             
         else:
             self.original = Image.open(path)
@@ -203,7 +206,7 @@ class pixelize(ctk.CTk):
         self.image.save(export_string)
 
     def placevid(self): #place holder func just to avoid the ImportImage func error
-        pass
+        self.video_output.video_player.play()
 
     def update_duration(self, duration):
         try:
