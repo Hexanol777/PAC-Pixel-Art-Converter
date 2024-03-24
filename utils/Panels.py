@@ -174,8 +174,18 @@ class SetSuggested(ctk.CTkButton):
         self.sharpness_slider.update_text_and_value(self.sharpness_value)
         self.vibrance_slider.update_text_and_value(self.vibrance_value)
 
+class VideoValueEntry(Panel): # logic for the panel used in Sliders
+    def __init__(self, parent, text, data_var):
+        super().__init__(parent = parent)
+        self.data_var = data_var
+        # layout
+        self.rowconfigure((0,1), weight = 1)
+        self.columnconfigure((0,1), weight = 1)
 
-class PlayStopButton(ctk.CTkButton):
-        def __init__(self, videoplayer):
-            super().__init__(master = parent, text= 'Play ►', command=self.save)
-            self.pack(side = 'bottom', pady = 10)
+        ctk.CTkLabel(self, text = text).grid(column = 0, row = 0
+                                             , sticky = 'W'
+                                             , padx = 10)
+        
+        ctk.CTkEntry(self, width=70, height=28, fg_color=SLIDER_BG, 
+                     border_color=BORDER, corner_radius=10).grid(column = 1, row = 0, 
+                                                                 sticky = 'E', padx = 10, pady=10)
