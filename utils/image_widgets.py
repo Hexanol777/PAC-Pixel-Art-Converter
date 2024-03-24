@@ -43,13 +43,15 @@ class VideoOutput(ctk.CTkFrame):
                   , padx = 10
                   , pady = 10)
 
-        self.video_player = TkinterVideo(master=parent, scaled=True, keep_aspect=True, consistant_frame_rate=True, bg="black")
+        self.video_player = TkinterVideo(master=parent, scaled=True, keep_aspect=True, consistant_frame_rate=True, bg=BACKGROUND_COLOR)
         self.video_player.set_resampling_method(1)
         self.video_player.grid(row=0, column=1, sticky='nsew', padx=10, pady=10)
         self.video_player.bind("<<Configure>>", place_video)
         self.video_player.bind("<<Duration>>", self.update_duration)
         self.video_player.bind("<<SecondChanged>>", self.update_scale)
         self.video_player.bind("<<Ended>>", self.video_ended)
+        self.video_player.load(self.video_file)
+
 
         self.progress_slider = ctk.CTkSlider(master=parent, from_=-1, to=1, number_of_steps=1, command=self.seek)
         self.progress_slider.set(-1)
@@ -58,21 +60,9 @@ class VideoOutput(ctk.CTkFrame):
         self.play_pause_btn = ctk.CTkButton(master=parent, text="Play ►", command=self.play_pause)
         self.play_pause_btn.grid(row=1, column=0, sticky='nsew', padx=10, pady=10)
 
-    def open_video(self):
-        self.video_player.stop()
-        if self.video_file:
-            try:
-                self.video_player.load(self.video_file)
-                self.video_player.play()
-                self.progress_slider.set(-1)
-                self.play_pause_btn.configure(text="Pause ||")
-                self.button_1.grid_forget()
-            except:
-                print("Unable to load the file")
-
     def update_duration(self, event):
         try:
-            duration = int(self.video_info()["duration"])
+            duration = int(self.video_player.video_info()["duration"])
             self.progress_slider.configure(from_=-1, to=duration, number_of_steps=duration)
         except:
             pass

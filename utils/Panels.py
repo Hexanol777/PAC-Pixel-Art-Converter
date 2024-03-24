@@ -130,7 +130,6 @@ class SuggestedValues(ctk.CTkFrame):
         self.grid_columnconfigure(1, weight=1)
         self.pack(expand=True, fill='both')
 
-
 class AnalysisPanel(Panel):
     def __init__(self, parent, image, pixel_size, color_palette, brightness, sharpness, vibrance):
         super().__init__(parent=parent)
@@ -152,6 +151,7 @@ class AnalysisPanel(Panel):
         self.closest_brightness, self.closest_vibrance, self.closest_palette = find_closest_color_palette(self.image)
         
 class SetSuggested(ctk.CTkButton):
+
     def __init__(self, parent, image, pixel_size, color_palette, brightness, sharpness, vibrance):
         super().__init__(master = parent, text= 'Set Values', command=self.set_values, border_width=0.75, border_color=BORDER)
 
@@ -173,3 +173,9 @@ class SetSuggested(ctk.CTkButton):
         self.brightness_slider.update_text_and_value(self.brightness_value)
         self.sharpness_slider.update_text_and_value(self.sharpness_value)
         self.vibrance_slider.update_text_and_value(self.vibrance_value)
+
+
+class PlayStopButton(ctk.CTkButton):
+        def __init__(self):
+            super().__init__(master = parent, text= 'Save', command=self.save)
+            self.pack(side = 'bottom', pady = 10)

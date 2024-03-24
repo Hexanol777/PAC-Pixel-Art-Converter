@@ -90,7 +90,7 @@ class pixelize(ctk.CTk):
         self.video_path = path
         self.image_import.grid_forget()
         if path.endswith(('.mp4', '.avi', '.mov', '.mkv', '.gif')):
-            self.video_output = VideoOutput(self, self.place_video, path)
+            self.video_output = VideoOutput(self, self.placevid, path)
             self.original = self.video_output.video_player.load(path)
             
         else:
@@ -103,21 +103,27 @@ class pixelize(ctk.CTk):
 
         
         self.close_button = CloseOutput(self, self.close_app)
+
         self.menu = Menu(self, self.pixel_size,
                          self.color_palette,
                          self.brightness,
-                         self.sharpness, 
+                         self.sharpness,
                          self.vibrance,
                          self.export_image,
                          self.original
                          )
-    
 
     def close_app(self):
         # removes the image from the frame
-        self.image_output.grid_forget()
+        try:
+            self.image_output.grid_forget()
+            self.menu.grid_forget() # not sure what is causing this to throw an error when the imported file is a video, but this shouldn't be here...
+
+        except AttributeError:
+            self.video_output.grid_forget()
+
         self.image_import.place_forget()
-        self.menu.grid_forget()
+
         # recreates the import button
         self.image_import = ImageImport(self, self.import_image)
 
@@ -194,8 +200,15 @@ class pixelize(ctk.CTk):
                                         self.original.height))
         self.image.save(export_string)
 
-    def place_video(self):
-        self.video_output.video_player.load(self.video_path)
-        self.video_output.video_player.play()
+    def placevid(self): #place holder func just to avoid the ImportImage func error
+        pass
+
+    def update_duration(self, duration):
+        try:
+            duration = int(self.original()["duration"])
+            self.progress_slider.configure(from_=-1, to=duration, number_of_steps=duration)
+            print(duration)
+        except:
+            pass
 
 pixelize()
