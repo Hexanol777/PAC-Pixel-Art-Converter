@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from Panels import *
+import PIL
 
 class Menu(ctk.CTkTabview): # main menu
     def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, export_image, image):
@@ -20,8 +21,7 @@ class Parameters(ctk.CTkFrame): # parameters tab
     def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, image):
         super().__init__(master = parent, fg_color= 'transparent')
         self.pack(expand = True, fill = 'both')
-
-        if image.endswith(('.jpg', '.jpeg', '.png')):
+        if isinstance(image, (PIL.JpegImagePlugin.JpegImageFile, PIL.PngImagePlugin.PngImageFile)): # checks for img or vid
             pixel_panel = SliderPanel(self, 'Pixel Size', pixel_size, 1, 20)
             palette = SliderPanel(self, 'Color Palette', color_palette, 5, 100)
             brightness_panel = SliderPanel(self, 'Brightness', brightness, 0, 200)
