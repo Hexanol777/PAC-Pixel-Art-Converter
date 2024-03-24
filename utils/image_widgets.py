@@ -51,7 +51,7 @@ class VideoOutput(ctk.CTkFrame):
         self.video_player.bind("<<SecondChanged>>", self.update_scale)
         self.video_player.bind("<<Ended>>", self.video_ended)
         self.video_player.load(self.video_file)
-
+        self.video_player.play()
 
         self.progress_slider = ctk.CTkSlider(master=parent, from_=-1, to=1, number_of_steps=1, command=self.seek)
         self.progress_slider.set(-1)

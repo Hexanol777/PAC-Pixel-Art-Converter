@@ -120,7 +120,9 @@ class pixelize(ctk.CTk):
             self.menu.grid_forget() # not sure what is causing this to throw an error when the imported file is a video, but this shouldn't be here...
 
         except AttributeError:
-            self.video_output.grid_forget()
+            self.video_output.video_player.grid_forget()
+            self.video_output.play_pause_btn.grid_forget()
+            self.video_output.progress_slider.grid_forget()
 
         self.image_import.place_forget()
 

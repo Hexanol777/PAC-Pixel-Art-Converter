@@ -176,6 +176,6 @@ class SetSuggested(ctk.CTkButton):
 
 
 class PlayStopButton(ctk.CTkButton):
-        def __init__(self):
-            super().__init__(master = parent, text= 'Save', command=self.save)
+        def __init__(self, videoplayer):
+            super().__init__(master = parent, text= 'Play ►', command=self.save)
             self.pack(side = 'bottom', pady = 10)
