@@ -3,6 +3,7 @@ from PIL import Image
 import imageio
 import numpy as np
 import cv2
+import os
 
 def resize_video_pixelsize(image, pixel_size):
     # Resize the image to the desired pixel size
@@ -48,7 +49,6 @@ def create_video(images, output_file, fps=60):
 
     Parameters:
         images (list): Has to be a list of PIL.Image objects.
-        output_file (str): Path to the output video file, passed by another func.
         fps (int): Frames per second for the output video. Default is 60.
     """
     writer = imageio.get_writer(output_file, fps=fps)
@@ -60,11 +60,10 @@ def create_video(images, output_file, fps=60):
     
     writer.close()
 
-def process_video(video_path, output_video_path, pixel_size, color_palette, brightness_factor, sharpness_factor, vibrance_factor):
-
+def process_video(video_path, pixel_size, color_palette, brightness_factor, sharpness_factor, vibrance_factor):
+    print(pixel_size, color_palette, brightness_factor, sharpness_factor, vibrance_factor)
     frame_list, fps = extract_frames(video_path)
     transformed_frames = []
-
     for frame in frame_list:
         # Apply the pipeline to the frame
         frame = resize_video_pixelsize(frame, pixel_size)
@@ -75,5 +74,10 @@ def process_video(video_path, output_video_path, pixel_size, color_palette, brig
         # Append to list
         transformed_frames.append(frame)
 
+
+    output_file = os.path.splitext(video_path)[0] + "_processed.mp4"
+    filename = "temp/" + os.path.basename(output_file)
+
     # Generate video
-    create_video(transformed_frames, output_video_path, fps)
+    create_video(transformed_frames, filename, fps)
+    return filename

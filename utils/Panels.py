@@ -205,4 +205,4 @@ class ApplyValuesButton(ctk.CTkButton):
             self.pack(side = 'bottom', pady = 5)
 
         def apply_values(self):
-            process_video(self.video, self.pixel_value, self.color_pallete_value, self.brightness_value, self.sharpness_value, self.vibrance_value)
+            self.video = process_video(self.video, self.pixel_value, self.color_pallete_value, self.brightness_value, self.sharpness_value, self.vibrance_value)

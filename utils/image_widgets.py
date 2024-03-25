@@ -51,10 +51,9 @@ class VideoOutput(ctk.CTkFrame):
         self.video_player.bind("<<SecondChanged>>", self.update_scale)
         self.video_player.bind("<<Ended>>", self.video_ended)
         self.video_player.load(self.video_file)
-        self.video_player.play()
 
         self.progress_slider = ctk.CTkSlider(master=parent, from_=-1, to=1, number_of_steps=1, command=self.seek)
-        self.progress_slider.set(-1)
+        self.progress_slider.set(1)
         self.progress_slider.grid(row=1, column=1, sticky='nsew', padx=10, pady=10)
 
         self.play_pause_btn = ctk.CTkButton(master=parent, text="Play ►", command=self.play_pause,

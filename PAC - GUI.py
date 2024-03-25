@@ -3,8 +3,8 @@ sys.path.append("utils")
 import customtkinter as ctk
 from utils.image_widgets import *
 from PIL import Image, ImageTk, ImageEnhance
-from tkVideoPlayer import TkinterVideo
 from utils.Settings import *
+from utils.Panels import *
 from utils.menu import Menu
 import os, json
 from utils.auto_value import data, count_colors
@@ -55,26 +55,31 @@ class pixelize(ctk.CTk):
         self.sharpness = ctk.DoubleVar(value = SHARPNESS_DEFAULT)
 
 
-        self.pixel_size.trace('w', self.manipulate_image)
-        self.color_palette.trace('w', self.manipulate_image)
-        self.brightness.trace('w', self.manipulate_image)
-        self.sharpness.trace('w', self.manipulate_image)
-        self.vibrance.trace('w', self.manipulate_image)
+        self.pixel_size.trace('w', self.handle_parameter_change)
+        self.color_palette.trace('w', self.handle_parameter_change)
+        self.brightness.trace('w', self.handle_parameter_change)
+        self.sharpness.trace('w', self.handle_parameter_change)
+        self.vibrance.trace('w', self.handle_parameter_change)
 
 
+    def handle_parameter_change(self, *args):
+        if self.original is PIL.Image.Image:
+            self.manipulate_image()
+        else:
+            self.manipulate_video()
 
-    def manipulate_image(self, *args):
+    def manipulate_image(self):
         self.image = self.original
 
-        # resize the image to the desired pixel size
+        # Resize the image to the desired pixel size
         self.image = resize_image_pixelsize(self.image, self.pixel_size.get())
         # Changes the amount of present colors in the image
         self.image = quantize_colors(self.image, self.color_palette.get())
-        # manipulates the bright of each pixel individually
+        # Manipulates the brightness of each pixel individually
         self.image = adjust_brightness(self.image, self.brightness.get())
-        # changes the color vibrancy
+        # Changes the color vibrancy
         self.image = adjust_vibrance(self.image, self.vibrance.get())
-        # adjusts the level of sharpness of the edges
+        # Adjusts the level of sharpness of the edges
         self.image = enhance_sharpness(self.image, self.sharpness.get())
 
         self.parameter_values = f'{round(self.pixel_size.get())}' \
@@ -85,15 +90,14 @@ class pixelize(ctk.CTk):
 
         self.place_image()
 
-    def manipulate_video(self, *args):
-        pass
+    def manipulate_video(self):
+        print(self.pixel_size.get())
 
     def import_image(self, path):
         self.image_import.grid_forget()
         if path.endswith(('.mp4', '.avi', '.mov', '.mkv', '.gif')):
             self.video_output = VideoOutput(self, self.placevid, path)
             self.original = path
-            print(self.original)
             self.placevid()
             
         else:
@@ -207,13 +211,6 @@ class pixelize(ctk.CTk):
 
     def placevid(self): #place holder func just to avoid the ImportImage func error
         self.video_output.video_player.play()
-
-    def update_duration(self, duration):
-        try:
-            duration = int(self.original()["duration"])
-            self.progress_slider.configure(from_=-1, to=duration, number_of_steps=duration)
-            print(duration)
-        except:
-            pass
+        
 
 pixelize()

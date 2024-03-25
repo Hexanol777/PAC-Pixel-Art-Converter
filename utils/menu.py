@@ -21,7 +21,9 @@ class Parameters(ctk.CTkFrame): # parameters tab
     def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, image):
         super().__init__(master = parent, fg_color= 'transparent')
         self.pack(expand = True, fill = 'both')
-        if isinstance(image, (PIL.JpegImagePlugin.JpegImageFile, PIL.PngImagePlugin.PngImageFile)): # checks for img or vid
+        print(image)
+
+        if isinstance(image, (PIL.Image.Image)): # checks for img or vid
             pixel_panel = SliderPanel(self, 'Pixel Size', pixel_size, 1, 20)
             palette = SliderPanel(self, 'Color Palette', color_palette, 5, 100)
             brightness_panel = SliderPanel(self, 'Brightness', brightness, 0, 200)
@@ -29,14 +31,14 @@ class Parameters(ctk.CTkFrame): # parameters tab
             vibrance_panel = SliderPanel(self, 'Color Vibrance', vibrance, 0, 300)
             SetSuggested(self, image, pixel_panel, palette, brightness_panel, sharpness_panel, vibrance_panel)    
             AnalysisPanel(self, image, pixel_size, color_palette, brightness, sharpness, vibrance)
-
+    
         else:
             VideoValueEntry(self, 'Pixel Size', pixel_size)
             VideoValueEntry(self, 'Color Palette', color_palette)
             VideoValueEntry(self, 'Brightness', brightness)
             VideoValueEntry(self, 'Edge Sharpness', sharpness)
             VideoValueEntry(self, 'Color Vibrance', vibrance)
-            ApplyValuesButton(self, image, pixel_size, color_palette, brightness, sharpness, vibrance)
+            ApplyValuesButton(self, image, pixel_size.get(), color_palette.get(), brightness.get(), sharpness.get(), vibrance.get())
 
 class SaveOptions(ctk.CTkFrame): # save options tab
     def __init__(self, parent, export_image):
