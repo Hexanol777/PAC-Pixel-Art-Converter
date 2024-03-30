@@ -126,9 +126,11 @@ class pixelize(ctk.CTk):
         try:
             self.image_output.grid_forget()
             self.menu.grid_forget()
-            self.video_output.video_player.grid_forget()
-            self.video_output.play_pause_btn.grid_forget()
-            self.video_output.progress_slider.grid_forget()
+            try:
+                self.video_output.play_pause_btn.grid_forget()
+                self.video_output.progress_slider.grid_forget()
+            except Exception:
+                pass
 
         except AttributeError:
             self.video_output.video_player.grid_forget()
