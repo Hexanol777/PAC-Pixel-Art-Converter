@@ -33,12 +33,11 @@ class Parameters(ctk.CTkFrame): # parameters tab
             AnalysisPanel(self, image, pixel_size, color_palette, brightness, sharpness, vibrance)
     
         else:
-            pixel_panel = VideoValueEntry(self, 'Pixel Size', pixel_size)
-            palette = VideoValueEntry(self, 'Color Palette', color_palette)
-            brightness_panel = VideoValueEntry(self, 'Brightness', brightness)
-            sharpness_panel = VideoValueEntry(self, 'Edge Sharpness', sharpness)
-            vibrance_panel = VideoValueEntry(self, 'Color Vibrance', vibrance)
-            ApplyValuesButton(self, image, pixel_size.get(), color_palette.get(), brightness.get(), sharpness.get(), vibrance.get())
+            pixel_panel = VideoValueEntry(self, 'Pixel Size', pixel_size, 1, 20)
+            palette = VideoValueEntry(self, 'Color Palette', color_palette, 5, 100)
+            brightness_panel = VideoValueEntry(self, 'Brightness', brightness, 0, 200)
+            sharpness_panel = VideoValueEntry(self, 'Edge Sharpness', sharpness, 0, 20)
+            vibrance_panel = VideoValueEntry(self, 'Color Vibrance', vibrance, 0, 300)
 
 class SaveOptions(ctk.CTkFrame): # save options tab
     def __init__(self, parent, export_image):

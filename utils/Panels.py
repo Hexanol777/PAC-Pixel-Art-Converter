@@ -177,24 +177,37 @@ class SetSuggested(ctk.CTkButton):
 
 class VideoValueEntry(Panel): # Value Entries for video
 
-    def __init__(self, parent, text, data_var):
+    def __init__(self, parent, text, data_var, min_value, max_value):
         super().__init__(parent = parent)
         self.data_var = data_var
         # layout
         self.rowconfigure((0,1), weight = 1)
         self.columnconfigure((0,1), weight = 1)
-
         ctk.CTkLabel(self, text = text).grid(column = 0, row = 0
                                              , sticky = 'W'
                                              , padx = 10)
-        
-        ctk.CTkEntry(self, width=70, height=28, fg_color=SLIDER_BG, 
-                     border_color=BORDER, corner_radius=10).grid(column = 1, row = 0, 
-                                                                 sticky = 'E', padx = 10, pady=10)
+
+        self.num_label = ctk.CTkLabel(self, text = data_var.get())
+        self.num_label.grid(column = 1, row = 0
+                            , sticky = 'E'
+                            , padx = 10)
+        ctk.CTkSlider(self,
+                      fg_color = SLIDER_BG,
+                      variable=data_var,
+                      from_ = min_value,
+                      to = max_value,
+                      command = self.update_text).grid(row = 1, column = 0
+                                                       , columnspan = 2
+                                                       , sticky = 'ew'
+                                                       , padx = 5
+                                                       , pady = 5)
+
+    def update_text(self, value):
+        self.num_label.configure(text = f'{round(value, 0)}')
         
 class ApplyValuesButton(ctk.CTkButton):
         def __init__(self, parent, video, pixel_size, color_palette, brightness, sharpness, vibrance):
-            super().__init__(master = parent, text= 'Set Values', command=self.apply_values, border_width=0.75, border_color=BORDER)
+            super().__init__(master = parent, text= 'Create Video', command=self.apply_values, border_width=0.75, border_color=BORDER)
 
             self.video = video
             self.pixel_value = pixel_size
@@ -202,7 +215,7 @@ class ApplyValuesButton(ctk.CTkButton):
             self.brightness_value = brightness
             self.sharpness_value = sharpness
             self.vibrance_value = vibrance
-            self.pack(side = 'bottom', pady = 5)
+            self.grid(row=1, column=0, sticky='nsew', padx=10, pady=10)
 
         def apply_values(self):
             self.video = process_video(self.video, self.pixel_value, self.color_pallete_value, self.brightness_value, self.sharpness_value, self.vibrance_value)

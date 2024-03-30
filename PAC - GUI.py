@@ -100,6 +100,13 @@ class pixelize(ctk.CTk):
             self.video_output = VideoOutput(self, self.placevid, path)
             self.original = path
             self.placevid()
+            ApplyValuesButton(self, self.original, 
+                              self.pixel_size.get(), 
+                              self.color_palette.get(), 
+                              self.brightness.get(), 
+                              self.sharpness.get(), 
+                              self.vibrance.get())
+
             
         else:
             self.original = Image.open(path)
