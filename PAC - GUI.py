@@ -41,7 +41,6 @@ class pixelize(ctk.CTk):
 
         # widgets
         self.image_import = ImageImport(self, self.import_image)
-        #self.video_import = VideoImport(self, self.import_video)
 
         # run
         self.mainloop()
@@ -91,8 +90,8 @@ class pixelize(ctk.CTk):
 
         self.place_image()
 
-    def manipulate_video(self):
-        print(self.pixel_size.get())
+    def manipulate_video(self, *args):
+        pass
 
     def import_image(self, path):
         self.image_import.grid_forget()
@@ -100,14 +99,7 @@ class pixelize(ctk.CTk):
             self.video_output = VideoOutput(self, self.placevid, path)
             self.original = path
             self.placevid()
-            ApplyValuesButton(self, self.original, 
-                              self.pixel_size.get(), 
-                              self.color_palette.get(), 
-                              self.brightness.get(), 
-                              self.sharpness.get(), 
-                              self.vibrance.get())
-
-            
+       
         else:
             self.original = Image.open(path)
             self.image = self.original
@@ -133,7 +125,7 @@ class pixelize(ctk.CTk):
         # removes the image from the frame
         try:
             self.image_output.grid_forget()
-            self.menu.grid_forget() # not sure what is causing this to throw an error when the imported file is a video, but this shouldn't be here...
+            self.menu.grid_forget()
             self.video_output.video_player.grid_forget()
             self.video_output.play_pause_btn.grid_forget()
             self.video_output.progress_slider.grid_forget()

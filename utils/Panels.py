@@ -215,11 +215,14 @@ class ApplyValuesButton(ctk.CTkButton):
             self.brightness_value = brightness
             self.sharpness_value = sharpness
             self.vibrance_value = vibrance
-            self.grid(row=1, column=0, sticky='nsew', padx=10, pady=10)
+
+            self.pack(side = 'bottom', pady = 5)
 
         def apply_values(self):
-            self.video = process_video(self.video, self.pixel_value, self.color_pallete_value, self.brightness_value, self.sharpness_value, self.vibrance_value)
+            self.video = process_video(self.video, self.pixel_value.get(), 
+                                       self.color_pallete_value.get(), self.brightness_value.get(), 
+                                       self.sharpness_value.get(), self.vibrance_value.get())
 
-        def update_text_and_value(self, value):
-            self.update_text(value)
-            self.data_var.set(value)
+        def update_values(self, *args):
+                    print("Updated values:", self.pixel_value, self.color_pallete_value, self.brightness_value, self.sharpness_value)
+

@@ -9,8 +9,8 @@ def resize_video_pixelsize(image, pixel_size):
     # Resize the image to the desired pixel size
     image = image.convert("RGB")
     width, height = image.size
-    new_width = width // pixel_size
-    new_height = height // pixel_size
+    new_width = width // round(pixel_size)
+    new_height = height // round(pixel_size)
     resized_img_pixelsize = image.resize((new_width, new_height), Image.NEAREST)
     final_resized_img = resized_img_pixelsize.resize((width, height), Image.NEAREST)
     return final_resized_img
