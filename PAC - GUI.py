@@ -3,6 +3,7 @@ sys.path.append("utils")
 import customtkinter as ctk
 from utils.image_widgets import *
 from PIL import Image, ImageTk, ImageEnhance
+import PIL
 from utils.Settings import *
 from utils.Panels import *
 from utils.menu import Menu
@@ -63,12 +64,12 @@ class pixelize(ctk.CTk):
 
 
     def handle_parameter_change(self, *args):
-        if self.original is PIL.Image.Image:
+        if isinstance(self.original, (PIL.Image.Image)):
             self.manipulate_image()
         else:
             self.manipulate_video()
 
-    def manipulate_image(self):
+    def manipulate_image(self, *args):
         self.image = self.original
 
         # Resize the image to the desired pixel size
@@ -103,6 +104,7 @@ class pixelize(ctk.CTk):
         else:
             self.original = Image.open(path)
             self.image = self.original
+            print(self.image)
             self.image_title = os.path.splitext(os.path.basename(path))[0]  # extract the image title without the extention
             self.image_ratio = self.image.size[0] / self.image.size[1]
             self.image_tk = ImageTk.PhotoImage(self.image)
@@ -125,6 +127,9 @@ class pixelize(ctk.CTk):
         try:
             self.image_output.grid_forget()
             self.menu.grid_forget() # not sure what is causing this to throw an error when the imported file is a video, but this shouldn't be here...
+            self.video_output.video_player.grid_forget()
+            self.video_output.play_pause_btn.grid_forget()
+            self.video_output.progress_slider.grid_forget()
 
         except AttributeError:
             self.video_output.video_player.grid_forget()
