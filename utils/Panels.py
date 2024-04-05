@@ -206,7 +206,7 @@ class VideoValueEntry(Panel): # Value Entries for video
         self.num_label.configure(text = f'{round(value, 0)}')
         
 class ApplyValuesButton(ctk.CTkButton):
-        def __init__(self, parent, video, pixel_size, color_palette, brightness, sharpness, vibrance):
+        def __init__(self, parent, video, pixel_size, color_palette, brightness, sharpness, vibrance, load_video):
             super().__init__(master = parent, text= 'Create Video', command=self.apply_values, border_width=0.75, border_color=BORDER)
 
             self.video = video
@@ -215,6 +215,7 @@ class ApplyValuesButton(ctk.CTkButton):
             self.brightness_value = brightness
             self.sharpness_value = sharpness
             self.vibrance_value = vibrance
+            self.load_video = load_video
 
             self.pack(side = 'bottom', pady = 5)
 
@@ -222,7 +223,8 @@ class ApplyValuesButton(ctk.CTkButton):
             self.video = process_video(self.video, self.pixel_value.get(), 
                                        self.color_pallete_value.get(), self.brightness_value.get(), 
                                        self.sharpness_value.get(), self.vibrance_value.get())
-
+            self.load_video(self.video)
+            
         def update_values(self, *args):
                     print("Updated values:", self.pixel_value, self.color_pallete_value, self.brightness_value, self.sharpness_value)
 

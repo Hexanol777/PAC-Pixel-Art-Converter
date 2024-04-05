@@ -3,7 +3,7 @@ from Panels import *
 import PIL
 
 class Menu(ctk.CTkTabview): # main menu
-    def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, export_image, image):
+    def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, export_image, image, load_video):
         super().__init__(master = parent)
         self.grid(row = 0, column = 0, sticky = 'nsew', pady = 10 , padx = 10)
 
@@ -12,13 +12,13 @@ class Menu(ctk.CTkTabview): # main menu
         self.add('Save Options')
 
         # widget
-        Parameters(self.tab('Parameters'), pixel_size, color_palette, brightness, sharpness, vibrance, image)
+        Parameters(self.tab('Parameters'), pixel_size, color_palette, brightness, sharpness, vibrance, image, load_video)
         SaveOptions(self.tab('Save Options'), export_image)
 
 
 
 class Parameters(ctk.CTkFrame): # parameters tab
-    def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, image):
+    def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, image, load_video):
         super().__init__(master = parent, fg_color= 'transparent')
         self.pack(expand = True, fill = 'both')
 
@@ -37,8 +37,9 @@ class Parameters(ctk.CTkFrame): # parameters tab
             brightness_panel = VideoValueEntry(self, 'Brightness', brightness, 0, 200)
             sharpness_panel = VideoValueEntry(self, 'Edge Sharpness', sharpness, 0, 20)
             vibrance_panel = VideoValueEntry(self, 'Color Vibrance', vibrance, 0, 300)
-            ApplyValuesButton(self, image, pixel_size, color_palette, brightness, sharpness, vibrance)
-            
+            ApplyValuesButton(self, image, pixel_size, color_palette, brightness, sharpness, vibrance, load_video)
+
+
 
 class SaveOptions(ctk.CTkFrame): # save options tab
     def __init__(self, parent, export_image):

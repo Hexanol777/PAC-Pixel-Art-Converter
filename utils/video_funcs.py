@@ -4,6 +4,8 @@ import imageio
 import numpy as np
 import cv2
 import os
+import image_widgets
+import threading
 
 def resize_video_pixelsize(image, pixel_size):
     # Resize the image to the desired pixel size
@@ -51,14 +53,15 @@ def create_video(images, output_file, fps=60):
         images (list): Has to be a list of PIL.Image objects.
         fps (int): Frames per second for the output video. Default is 60.
     """
+    if not os.path.exists("./temp"):
+        os.mkdir("./temp")
     writer = imageio.get_writer(output_file, fps=fps)
-    
     for img in images:
         img = img.convert("RGB")
         img_data = np.array(img)
         writer.append_data(img_data)
-    
     writer.close()
+    print(output_file)
 
 def process_video(video_path, pixel_size, color_palette, brightness_factor, sharpness_factor, vibrance_factor):
     print(pixel_size, color_palette, brightness_factor, sharpness_factor, vibrance_factor)
@@ -80,4 +83,5 @@ def process_video(video_path, pixel_size, color_palette, brightness_factor, shar
 
     # Generate video
     create_video(transformed_frames, filename, fps)
+    
     return filename
