@@ -11,7 +11,6 @@ import os, json
 from utils.auto_value import data, count_colors
 from utils.image_funcs import *
 
-
 class pixelize(ctk.CTk):
     def __init__(self):
 
