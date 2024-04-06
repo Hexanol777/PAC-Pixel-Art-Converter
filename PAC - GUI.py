@@ -11,7 +11,6 @@ import os, json
 from utils.auto_value import data, count_colors
 from utils.image_funcs import *
 
-
 class pixelize(ctk.CTk):
     def __init__(self):
 
@@ -96,9 +95,8 @@ class pixelize(ctk.CTk):
     def import_image(self, path):
         self.image_import.grid_forget()
         if path.endswith(('.mp4', '.avi', '.mov', '.mkv', '.gif')):
-            self.video_output = VideoOutput(self, self.placevid, path)
+            self.video_output = VideoOutput(self, path)
             self.original = path
-            self.placevid()
        
         else:
             self.original = Image.open(path)
@@ -118,7 +116,8 @@ class pixelize(ctk.CTk):
                          self.sharpness,
                          self.vibrance,
                          self.export_image,
-                         self.original
+                         self.original,
+                         self.load_video
                          )
 
     def close_app(self):
@@ -215,8 +214,7 @@ class pixelize(ctk.CTk):
                                         self.original.height))
         self.image.save(export_string)
 
-    def placevid(self): #place holder func just to avoid the ImportImage func error
-        self.video_output.video_player.play()
-        
+    def load_video(self, filename):
+        self.video_output.video_player.load(filename)
 
 pixelize()
