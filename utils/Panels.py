@@ -16,7 +16,6 @@ class ImagePanel(ctk.CTkFrame): # where the image lies
         super().__init__(master = parent, fg_color = DARK_GREY)
         self.pack(fill = 'x', pady = 4, ipady = 8)
 
-
 class SliderPanel(Panel): # logic for the panel used in Sliders
     def __init__(self, parent, text, data_var, min_value, max_value):
         super().__init__(parent = parent)
@@ -271,15 +270,36 @@ class ApplyValuesButton(ctk.CTkButton):
         def update_values(self, *args):
                     print("Updated values:", self.pixel_value, self.color_pallete_value, self.brightness_value, self.sharpness_value)
 
+
 class Notifications(ctk.CTkFrame):
-    def __init__(self, parent): 
-        super().__init__(master = parent, fg_color = NOTIFICATION_FG, border_width = 1, border_color = NOTIFICATION_BORDER, corner_radius=2.5)
+    def __init__(self, master, text):
+        super().__init__(master, bg_color='transparent', fg_color=NOTIFICATION_FG, width=400, height=25, border_color = NOTIFICATION_BORDER, border_width = 1, corner_radius = 10)
+        self.pack_propagate(0)
+
+        right_offset = 10
+
+        self.cur_x = self.winfo_width()
+        self.x = self.cur_x - (0 + right_offset)
+
+        message = ctk.CTkLabel(self, text=text, text_color="white")
+        message.pack(expand=True, fill="both", padx=10, pady=1)
+
+        print(self.cur_x, self.x)
         self.place(relx = 0.99, rely = 0.01, anchor = 'ne')
-        notification = ctk.CTkLabel(self, text=f'Video Saved in Output Folder, Press <<Play>> to See the Results', text_color='white')
-        notification.pack(expand=True, fill="both", padx=10, pady=10)
 
-        self.after(5000, self.hide_notification)
+        self.after(5000, self.show_animation)
+
+    def show_animation(self):
+        if self.cur_x > self.x:
+            self.cur_x -= 1
+            self.place(x=self.cur_x)
+            self.after(1, self.show_animation)
+        else:
+            self.hide_animation()
 
 
-    def hide_notification(self):
-        self.place_forget()
+    def hide_animation(self):
+        if self.cur_x < self.master.winfo_width():
+            self.cur_x += 1
+            self.place(x=self.cur_x)
+            self.after(1, self.hide_animation)

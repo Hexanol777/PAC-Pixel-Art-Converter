@@ -16,4 +16,4 @@ CLOSE_RED = '#e74c3c'           # Red for close or delete buttons
 CLOSE_BORDER = '#c0392b'        # Border for the close button
 SLIDER_BG = '#34495e'           # Dark blue for sliders or progress
 NOTIFICATION_FG = '#87CEEB'     # Fg color for the notification frame
-NOTIFICATION_BORDER = '#1E90FF' # Border color for the notification
+NOTIFICATION_BORDER = '#1865b1' # Border color for the notification

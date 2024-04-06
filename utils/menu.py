@@ -7,14 +7,16 @@ class Menu(ctk.CTkTabview): # main menu
         super().__init__(master = parent)
         self.grid(row = 0, column = 0, sticky = 'nsew', pady = 10 , padx = 10)
 
-        # tabs, new tabs get added here
-        self.add('Parameters')
-        self.add('Save Options')
 
         # widget
-        Parameters(self.tab('Parameters'), pixel_size, color_palette, brightness, sharpness, vibrance, image, load_video)
-        SaveOptions(self.tab('Save Options'), export_image)
-
+        if isinstance(image, (PIL.Image.Image)): # checks for img or vid
+            self.add('Parameters')
+            self.add('Save Options')
+            Parameters(self.tab('Parameters'), pixel_size, color_palette, brightness, sharpness, vibrance, image, load_video)
+            SaveOptions(self.tab('Save Options'), export_image)
+        else:
+            self.add('Parameters')
+            Parameters(self.tab('Parameters'), pixel_size, color_palette, brightness, sharpness, vibrance, image, load_video)
 
 
 class Parameters(ctk.CTkFrame): # parameters tab
