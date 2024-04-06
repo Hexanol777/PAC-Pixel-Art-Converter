@@ -51,7 +51,7 @@ class SliderPanel(Panel): # logic for the panel used in Sliders
         self.update_text(value)
         self.data_var.set(value)
 
-class FileNamePanel(Panel):
+class ImageFileNamePanel(Panel):
     def __init__(self, parent, name_string, file_string):
         super().__init__(parent = parent)
 
@@ -73,6 +73,49 @@ class FileNamePanel(Panel):
                                     onvalue = 'png', offvalue = 'jpg')
         jpg_check.pack(side = 'left', fill = 'x', expand = True)
         png_check.pack(side='right', fill='x', expand=True)
+
+        checkbox_frame.pack(expand = True, fill = 'x', padx = 20)
+
+        # preview text
+        self.output = ctk.CTkLabel(self, text = '')
+        self.output.pack()
+
+    def click(self, value):
+        self.file_string.set(value)
+        self.update_name_text()
+
+    def update_name_text(self, *args):
+        if self.name_string.get():
+            text = self.name_string.get() +'.' + self.file_string.get()
+            self.output.configure(text = text)
+
+class FileNamePanel(Panel): # file name panel for videos
+    def __init__(self, parent, name_string, file_string):
+        super().__init__(parent = parent)
+
+        # data
+        self.name_string = name_string
+        self.name_string.trace('w', self.update_name_text)
+
+        self.file_string = file_string
+
+        # extra arguments
+        ctk.CTkEntry(self, textvariable= self.name_string).pack(fill = 'x', padx = 20, pady = 5)
+        checkbox_frame = ctk.CTkFrame(self, fg_color= 'transparent')
+
+        gif_check = ctk.CTkCheckBox(checkbox_frame, text='gif', variable=self.file_string,
+                                    command=lambda: self.click('gif'),
+                                    onvalue='gif', offvalue='webm')
+        webm_check = ctk.CTkCheckBox(checkbox_frame, text='webm', variable=self.file_string,
+                                    command=lambda: self.click('webm'),
+                                    onvalue='webm', offvalue='mp4')
+        mp4_check = ctk.CTkCheckBox(checkbox_frame, text='mp4', variable=self.file_string,
+                                    command=lambda: self.click('mp4'),
+                                    onvalue='mp4', offvalue='gif')
+        
+        gif_check.pack(side = 'left', fill = 'x', expand = True)
+        webm_check.pack(side='left', fill='x', expand=True)
+        mp4_check.pack(side='left', fill='x', expand=True)
 
         checkbox_frame.pack(expand = True, fill = 'x', padx = 20)
 
@@ -117,7 +160,6 @@ class SaveButton(ctk.CTkButton):
             self.path_string.get()
             )
 
-        
 class SuggestedValues(ctk.CTkFrame):
     def __init__(self, parent, text, suggested_value):
         super().__init__(master=parent, fg_color=DARK_GREY)
