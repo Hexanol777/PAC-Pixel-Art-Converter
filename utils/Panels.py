@@ -16,6 +16,7 @@ class ImagePanel(ctk.CTkFrame): # where the image lies
         super().__init__(master = parent, fg_color = DARK_GREY)
         self.pack(fill = 'x', pady = 4, ipady = 8)
 
+
 class SliderPanel(Panel): # logic for the panel used in Sliders
     def __init__(self, parent, text, data_var, min_value, max_value):
         super().__init__(parent = parent)
@@ -270,3 +271,15 @@ class ApplyValuesButton(ctk.CTkButton):
         def update_values(self, *args):
                     print("Updated values:", self.pixel_value, self.color_pallete_value, self.brightness_value, self.sharpness_value)
 
+class Notifications(ctk.CTkFrame):
+    def __init__(self, parent): 
+        super().__init__(master = parent, fg_color = NOTIFICATION_FG, border_width = 1, border_color = NOTIFICATION_BORDER, corner_radius=2.5)
+        self.place(relx = 0.99, rely = 0.01, anchor = 'ne')
+        notification = ctk.CTkLabel(self, text=f'Video Saved in Output Folder, Press <<Play>> to See the Results', text_color='white')
+        notification.pack(expand=True, fill="both", padx=10, pady=10)
+
+        self.after(5000, self.hide_notification)
+
+
+    def hide_notification(self):
+        self.place_forget()

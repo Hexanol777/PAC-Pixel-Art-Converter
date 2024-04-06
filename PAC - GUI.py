@@ -216,5 +216,6 @@ class pixelize(ctk.CTk):
 
     def load_video(self, filename):
         self.video_output.video_player.load(filename)
+        Notifications(self)
 
 pixelize()
