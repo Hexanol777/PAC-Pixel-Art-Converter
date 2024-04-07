@@ -103,19 +103,14 @@ class FileNamePanel(Panel): # file name panel for videos
         ctk.CTkEntry(self, textvariable= self.name_string).pack(fill = 'x', padx = 20, pady = 5)
         checkbox_frame = ctk.CTkFrame(self, fg_color= 'transparent')
 
-        gif_check = ctk.CTkCheckBox(checkbox_frame, text='gif', variable=self.file_string,
-                                    command=lambda: self.click('gif'),
-                                    onvalue='gif', offvalue='webm')
-        webm_check = ctk.CTkCheckBox(checkbox_frame, text='webm', variable=self.file_string,
-                                    command=lambda: self.click('webm'),
-                                    onvalue='webm', offvalue='mp4')
-        mp4_check = ctk.CTkCheckBox(checkbox_frame, text='mp4', variable=self.file_string,
-                                    command=lambda: self.click('mp4'),
-                                    onvalue='mp4', offvalue='gif')
-        
-        gif_check.pack(side = 'left', fill = 'x', expand = True)
-        webm_check.pack(side='left', fill='x', expand=True)
-        mp4_check.pack(side='left', fill='x', expand=True)
+        jpg_check = ctk.CTkCheckBox(checkbox_frame, text = 'jpg', variable = self.file_string,
+                                    command = lambda: self.click('jpg'),
+                                    onvalue = 'jpg', offvalue = 'png')
+        png_check = ctk.CTkCheckBox(checkbox_frame, text = 'png', variable = self.file_string,
+                                    command = lambda: self.click('png'),
+                                    onvalue = 'png', offvalue = 'jpg')
+        jpg_check.pack(side = 'left', fill = 'x', expand = True)
+        png_check.pack(side='right', fill='x', expand=True)
 
         checkbox_frame.pack(expand = True, fill = 'x', padx = 20)
 
@@ -270,22 +265,26 @@ class ApplyValuesButton(ctk.CTkButton):
         def update_values(self, *args):
                     print("Updated values:", self.pixel_value, self.color_pallete_value, self.brightness_value, self.sharpness_value)
 
-
 class Notifications(ctk.CTkFrame):
-    def __init__(self, master, text):
-        super().__init__(master, bg_color='transparent', fg_color=NOTIFICATION_FG, width=400, height=25, border_color = NOTIFICATION_BORDER, border_width = 1, corner_radius = 10)
+    def __init__(self, parent, message):
+        super().__init__(parent, bg_color='transparent', fg_color=DARK_GREY, width=125, height=75, border_color=BORDER, border_width=1, corner_radius=10)
         self.pack_propagate(0)
 
-        right_offset = 10
-
+        right_offset = 15
+        
         self.cur_x = self.winfo_width()
         self.x = self.cur_x - (0 + right_offset)
 
-        message = ctk.CTkLabel(self, text=text, text_color="white")
-        message.pack(expand=True, fill="both", padx=10, pady=1)
+        self.message_label = ctk.CTkLabel(self, text=message)
+        self.message_label.pack(expand=True, fill="both", padx=10, pady=5)
+
+        # Call break_message_into_parts method to split the message
+        message_parts = self.break_message_into_parts(message)
+        print(message_parts)
+        self.message_label.configure(text='\n'.join(message_parts))
 
         print(self.cur_x, self.x)
-        self.place(relx = 0.99, rely = 0.01, anchor = 'ne')
+        self.place(relx=0.99, rely=0.02, anchor='ne')
 
         self.after(5000, self.show_animation)
 
@@ -303,3 +302,26 @@ class Notifications(ctk.CTkFrame):
             self.cur_x += 1
             self.place(x=self.cur_x)
             self.after(1, self.hide_animation)
+
+    def break_message_into_parts(self, message=None):
+        if message is None:
+            message = self.message_label.cget("text")
+
+        text_parts = []
+        current_part = ''
+        max_width = 125  # Width of the frame hard coded for now
+
+        # Create a temporary label to calculate the width
+        temp_label = ctk.CTkLabel(self, text="", font=self.message_label.cget("font"))
+        for word in message.split():
+            temp_label.configure(text=current_part + word)
+            temp_label.update_idletasks()  # Update the widget
+            if temp_label.winfo_reqwidth() > max_width:
+                text_parts.append(current_part.strip())
+                current_part = ''
+            current_part += word + ' '
+        text_parts.append(current_part.strip())
+
+        # Destroy the temporary label
+        temp_label.destroy()
+        return text_parts 

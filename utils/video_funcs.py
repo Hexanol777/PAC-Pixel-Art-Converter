@@ -4,8 +4,6 @@ import imageio
 import numpy as np
 import cv2
 import os
-import image_widgets
-import threading
 
 def resize_video_pixelsize(image, pixel_size):
     # Resize the image to the desired pixel size
