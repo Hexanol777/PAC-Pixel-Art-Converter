@@ -16,9 +16,11 @@ class ImageImport(ctk.CTkFrame): # That import button on the first layout
                       border_color=BORDER).pack(expand=True)
 
     def open_dialog(self):
-        path = filedialog.askopenfile(filetypes=[('Image', ['*.jpg', '*.jpeg', '*.png']), ('Video', ['*.mp4', '*.avi', '*.mov', '*.mkv', '*.gif'])]).name
-        self.import_func(path)
-
+        try:
+            path = filedialog.askopenfile(filetypes=[('Image', ['*.jpg', '*.jpeg', '*.png']), ('Video', ['*.mp4', '*.avi', '*.mov', '*.mkv', '*.gif'])]).name
+            self.import_func(path)
+        except:
+            pass
 
 class ImageOutput(Canvas):
     def __init__(self, parent, resize_image):

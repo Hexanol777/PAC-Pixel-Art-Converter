@@ -213,6 +213,7 @@ class pixelize(ctk.CTk):
         self.image = self.image.resize((self.original.width, 
                                         self.original.height))
         self.image.save(export_string)
+        Notifications(self, f"Image Saved in {path}")
 
     def load_video(self, filename):
         self.video_output.video_player.load(filename)

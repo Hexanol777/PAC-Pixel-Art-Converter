@@ -169,9 +169,9 @@ class SuggestedValues(ctk.CTkFrame):
         self.pack(expand=True, fill='both')
 
 class AnalysisPanel(Panel):
-    def __init__(self, parent, image, pixel_size, color_palette, brightness, sharpness, vibrance):
+    def __init__(self, parent, image):
         super().__init__(parent=parent)
-        self.pack(fill='x', side='bottom', pady=5, ipady=8)
+        self.pack(fill='x', side='bottom', pady=10, ipady=12)
         self.image = image
 
         ctk.CTkLabel(self, text="Suggested Values").pack(padx=5)
@@ -261,9 +261,6 @@ class ApplyValuesButton(ctk.CTkButton):
                                        self.color_pallete_value.get(), self.brightness_value.get(), 
                                        self.sharpness_value.get(), self.vibrance_value.get())
             self.load_video(self.video)
-            
-        def update_values(self, *args):
-                    print("Updated values:", self.pixel_value, self.color_pallete_value, self.brightness_value, self.sharpness_value)
 
 class Notifications(ctk.CTkFrame):
     def __init__(self, parent, message):
@@ -280,10 +277,7 @@ class Notifications(ctk.CTkFrame):
 
         # Call break_message_into_parts method to split the message
         message_parts = self.break_message_into_parts(message)
-        print(message_parts)
         self.message_label.configure(text='\n'.join(message_parts))
-
-        print(self.cur_x, self.x)
         self.place(relx=0.99, rely=0.02, anchor='ne')
 
         self.after(5000, self.show_animation)
