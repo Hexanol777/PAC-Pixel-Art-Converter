@@ -76,7 +76,13 @@ def process_video(video_path, pixel_size, color_palette, brightness_factor, shar
         transformed_frames.append(frame)
 
 
-    output_file = os.path.splitext(video_path)[0] + "_processed.mp4"
+    parameter_values = f'{round(pixel_size)}' \
+                       f' - {round(color_palette)}' \
+                       f' - {round(brightness_factor)}' \
+                       f' - {round(sharpness_factor)}' \
+                       f' - {round(vibrance_factor)}'
+
+    output_file = os.path.splitext(video_path)[0] + f" - {parameter_values}.mp4"
     filename = "temp/" + os.path.basename(output_file)
 
     # Generate video
