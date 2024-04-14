@@ -12,7 +12,7 @@ PAC (Pixel Art Converter) is a simple GUI application that allows you to convert
 </p>
 
 <p align="center">
-  <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/READMEmd/PAC%20-%20Screenshot%202.png" alt="PAC - Screenshot 3" />
+  <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/READMEmd/PAC%20-%20Screenshot%203.png" alt="PAC - Screenshot 3" />
 </p>
 
 ## Features
