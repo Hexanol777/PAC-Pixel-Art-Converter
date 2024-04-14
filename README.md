@@ -29,20 +29,6 @@ PAC (Pixel Art Converter) is a simple GUI application that allows you to convert
 - Display image operations in real-time
 - Animated notifications for important messages
 
-## Features
-
-- Import images and videos in almost all formats and view them in the application
-- Resize the image to a chosen pixel size for a pixelated effect
-- Adjust the color palette to control the number of colors in the image (16 - 25 recommended)
-- Fine-tune sharpness to emphasize or soften the edges
-- Manipulate brightness to lighten or darken the image
-- Modify color vibrance to enhance or reduce color saturation
-- Automatically determine the best parameter values for the images and videos
-- Perpetual data augmentation for customized value determination
-- Export the processed image or video in JPEG, PNG, or video format
-- Display image operations in real-time
-- Animated notifications for important messages
-
 #### Auto Value determination
 
 The Auto Value Determination feature employs a rather simple but effective algorithm to analyze the input image or video and suggest parameter values for pixel size, color palette, brightness, sharpness, and vibrance. Initially, it uses a set of 80 various points to evaluate the characteristics of the media and generate a preliminary set of parameter values. Over time, as the user continues to utilize the app and adjusts the settings according to their preferences, The algorithm dynamically adapts and refines its suggestions to better align with the user's taste. This iterative process ensures that the parameter values suggested by Auto Value Determination become increasingly more personalized to the user.
