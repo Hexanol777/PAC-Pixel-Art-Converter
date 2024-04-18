@@ -75,9 +75,14 @@ The exported images are structured in the below formatting scheme:
 Image name serves as a record of the specific parameter values used during the image generation
 ## Future Enhancements
 
-- Optimize image operations using NumPy for a faster execution time
-- Change the structure of init_parameters for better data management.
-- Get the `Sharpness` parameter to work again
+- ~~Optimize image operations using NumPy for a faster execution time~~ minimal change noticed...
+- ~~Change the structure of `init_parameters` for better data management.~~ Done!
+- ~~Get the `Sharpness` parameter to work again~~ Done!
+- ~~Add `Auto value determination`~~ Done!
+- ~~Add `Video support`~~ Done!
+- ~~Enhance overall theme and give it a modern look~~ Done!
+- ~~`Dynamic GUI` changing based on the imported file~~ Done!
+- ~~Add `Notifications`~~ Done!
 
 ## Examples
 | ![LifeLine](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/input/2.jpg) | ![LifeLine](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Lifeline%20-%205%20-%2075%20-%20100%20-%20100.png) |
