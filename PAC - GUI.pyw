@@ -3,11 +3,13 @@ sys.path.append("utils")
 import customtkinter as ctk
 from utils.image_widgets import *
 from PIL import Image, ImageTk, ImageEnhance
+import PIL
 from utils.Settings import *
+from utils.Panels import *
 from utils.menu import Menu
 import os, json
 from utils.auto_value import data, count_colors
-
+from utils.image_funcs import *
 
 class pixelize(ctk.CTk):
     def __init__(self):
@@ -17,6 +19,7 @@ class pixelize(ctk.CTk):
         ctk.set_appearance_mode('system')
         self.geometry('1100x750')
         self.minsize(900, 600)
+        
 
         try:
             self.iconbitmap('lantern.ico')
@@ -38,6 +41,7 @@ class pixelize(ctk.CTk):
 
         # widgets
         self.image_import = ImageImport(self, self.import_image)
+        
 
         # run
         self.mainloop()
@@ -52,27 +56,32 @@ class pixelize(ctk.CTk):
         self.sharpness = ctk.DoubleVar(value = SHARPNESS_DEFAULT)
 
 
-        self.pixel_size.trace('w', self.manipulate_image)
-        self.color_palette.trace('w', self.manipulate_image)
-        self.brightness.trace('w', self.manipulate_image)
-        self.sharpness.trace('w', self.manipulate_image)
-        self.vibrance.trace('w', self.manipulate_image)
+        self.pixel_size.trace('w', self.handle_parameter_change)
+        self.color_palette.trace('w', self.handle_parameter_change)
+        self.brightness.trace('w', self.handle_parameter_change)
+        self.sharpness.trace('w', self.handle_parameter_change)
+        self.vibrance.trace('w', self.handle_parameter_change)
 
 
+    def handle_parameter_change(self, *args):
+        if isinstance(self.original, (PIL.Image.Image)):
+            self.manipulate_image()
+        else:
+            self.manipulate_video()
 
     def manipulate_image(self, *args):
         self.image = self.original
 
-        # resize the image to the desired pixel size
-        self.image = self.resize_image_pixelsize(self.image, self.pixel_size.get())
+        # Resize the image to the desired pixel size
+        self.image = resize_image_pixelsize(self.image, self.pixel_size.get())
         # Changes the amount of present colors in the image
-        self.image = self.quantize_colors(self.image, self.color_palette.get())
-        # manipulates the bright of each pixel individually
-        self.image = self.adjust_brightness(self.image, self.brightness.get())
-        # changes the color vibrancy
-        self.image = self.adjust_vibrance(self.image, self.vibrance.get())
-        # adjusts the level of sharpness of the edges
-        self.image = self.enhance_sharpness(self.image, self.sharpness.get())
+        self.image = quantize_colors(self.image, self.color_palette.get())
+        # Manipulates the brightness of each pixel individually
+        self.image = adjust_brightness(self.image, self.brightness.get())
+        # Changes the color vibrancy
+        self.image = adjust_vibrance(self.image, self.vibrance.get())
+        # Adjusts the level of sharpness of the edges
+        self.image = enhance_sharpness(self.image, self.sharpness.get())
 
         self.parameter_values = f'{round(self.pixel_size.get())}' \
                                 f' - {round(self.color_palette.get())}' \
@@ -82,32 +91,55 @@ class pixelize(ctk.CTk):
 
         self.place_image()
 
+    def manipulate_video(self, *args):
+        pass
 
     def import_image(self, path):
-        self.original = Image.open(path)
-        self.image = self.original
-        self.image_title = os.path.splitext(os.path.basename(path))[0]  # extract the image title without the extention
-        self.image_ratio = self.image.size[0] / self.image.size[1]
-        self.image_tk = ImageTk.PhotoImage(self.image)
-
         self.image_import.grid_forget()
-        self.image_output = ImageOutput(self, self.resize_image)
+        if path.endswith(('.mp4', '.avi', '.mov', '.mkv', '.gif')):
+            self.video_output = VideoOutput(self, path)
+            self.original = path
+       
+        else:
+            self.original = Image.open(path)
+            self.image = self.original
+            print(self.image)
+            self.image_title = os.path.splitext(os.path.basename(path))[0]  # extract the image title without the extention
+            self.image_ratio = self.image.size[0] / self.image.size[1]
+            self.image_tk = ImageTk.PhotoImage(self.image)
+            self.image_output = ImageOutput(self, self.resize_image)
+
+        
         self.close_button = CloseOutput(self, self.close_app)
 
         self.menu = Menu(self, self.pixel_size,
                          self.color_palette,
                          self.brightness,
-                         self.sharpness, 
+                         self.sharpness,
                          self.vibrance,
                          self.export_image,
-                         self.original
+                         self.original,
+                         self.load_video
                          )
 
     def close_app(self):
         # removes the image from the frame
-        self.image_output.grid_forget()
+        try:
+            self.image_output.grid_forget()
+            self.menu.grid_forget()
+            try:
+                self.video_output.play_pause_btn.grid_forget()
+                self.video_output.progress_slider.grid_forget()
+            except Exception:
+                pass
+
+        except AttributeError:
+            self.video_output.video_player.grid_forget()
+            self.video_output.play_pause_btn.grid_forget()
+            self.video_output.progress_slider.grid_forget()
+
         self.image_import.place_forget()
-        self.menu.grid_forget()
+
         # recreates the import button
         self.image_import = ImageImport(self, self.import_image)
 
@@ -176,7 +208,6 @@ class pixelize(ctk.CTk):
 
         for key, value in appending_parameters.items():
             data[key].append(value)
-            print(value)
 
         with open('utils/data.json', 'w') as file:
             json.dump(data, file)
@@ -184,47 +215,10 @@ class pixelize(ctk.CTk):
         self.image = self.image.resize((self.original.width, 
                                         self.original.height))
         self.image.save(export_string)
+        Notifications(self, f"Image Saved in {path}")
 
-    def resize_image_pixelsize(self, image, pixel_size):
-        # Resize the image to the desired pixel size
-        self.image = self.image.convert("RGB")
-
-        self.new_width = self.image.size[1] // round(pixel_size)
-        self.new_height = self.image.size[0] // round(pixel_size)
-
-        self.resized_img_pixelsize = image.resize((self.new_width, 
-                                                   self.new_height),
-                                                    Image.LANCZOS)
-        return self.resized_img_pixelsize
-
-    def quantize_colors(self, image, color_palette):
-        # Reduce the color palette
-        self.image = self.image.convert("RGB")
-        self.quantized_image = self.image.quantize(colors=round(color_palette))
-        return self.quantized_image
-
-    def adjust_brightness(self, image, brightness_factor):
-        # Adjust the brightness of the image
-        self.image = self.image.convert("RGB")
-        brightness_float = brightness_factor / 100
-        enhancer = ImageEnhance.Brightness(self.image)
-        self.adjusted_image = enhancer.enhance(brightness_float)
-        return self.adjusted_image
-
-    def enhance_sharpness(self, image, sharpness_factor): 
-        # Enhance the sharpness of the image
-        self.image = self.image.convert("RGB")
-        sharpness_factor = sharpness_factor / 10
-        enhancer = ImageEnhance.Sharpness(self.image)
-        self.enhanced_image = enhancer.enhance(sharpness_factor)
-        return self.enhanced_image
-
-    def adjust_vibrance(self, image, vibrance_factor):
-        # Adjust the vibrance of the image
-        self.image = self.image.convert("RGB")
-        vibrance_float = vibrance_factor / 100
-        enhancer = ImageEnhance.Color(self.image)
-        self.vibrant_image = enhancer.enhance(vibrance_float)
-        return self.vibrant_image
+    def load_video(self, filename):
+        self.video_output.video_player.load(filename)
+        Notifications(self, "Video Saved in temp Folder Press <<Play>> to See the Results")
 
 pixelize()

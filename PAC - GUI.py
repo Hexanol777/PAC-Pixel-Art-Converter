@@ -19,7 +19,7 @@ class pixelize(ctk.CTk):
         ctk.set_appearance_mode('system')
         self.geometry('1100x750')
         self.minsize(900, 600)
-
+        
         try:
             self.iconbitmap('lantern.ico')
         except Exception as e:
