@@ -158,23 +158,21 @@ class SaveButton(ctk.CTkButton):
 class SuggestedValues(ctk.CTkFrame):
     def __init__(self, parent, text, suggested_value):
         super().__init__(master=parent, fg_color=DARK_GREY)
-        self.suggested_value = suggested_value
-
-        ctk.CTkLabel(self, text=text).grid(column=0, row=0, sticky='W', padx=10)
-
-        self.num_label = ctk.CTkLabel(self, text=self.suggested_value)
-        self.num_label.grid(column=1, row=0, sticky='E', padx=10)
+        
+        ctk.CTkLabel(self, text=text).pack(side='left', padx=5)
+        
+        self.num_label = ctk.CTkLabel(self, text=suggested_value)
+        self.num_label.pack(side='right', padx=5)
         # Add weight to the second column to push the label to the right
-        self.grid_columnconfigure(1, weight=1)
-        self.pack(expand=True, fill='both')
+        self.pack(expand=True, padx=5, fill='x')  
 
 class AnalysisPanel(Panel):
     def __init__(self, parent, image):
         super().__init__(parent=parent)
-        self.pack(side='bottom', pady=8)
+        self.pack(side='bottom', pady=0, padx=5, fill='x')
         self.image = image
 
-        ctk.CTkLabel(self, text="Suggested Values").pack(padx=5)
+        ctk.CTkLabel(self, text="Suggested Values").pack(pady=5)
 
         self.analyze_image()
 
@@ -189,7 +187,6 @@ class AnalysisPanel(Panel):
         self.closest_brightness, self.closest_vibrance, self.closest_palette = find_closest_color_palette(self.image)
         
 class SetSuggested(ctk.CTkButton):
-
     def __init__(self, parent, image, pixel_size, color_palette, brightness, sharpness, vibrance):
         super().__init__(master = parent, text= 'Set Values', command=self.set_values, border_width=0.75, border_color=BORDER)
 
