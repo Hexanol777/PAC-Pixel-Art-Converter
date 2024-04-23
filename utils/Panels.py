@@ -169,7 +169,7 @@ class SuggestedValues(ctk.CTkFrame):
 class AnalysisPanel(Panel):
     def __init__(self, parent, image):
         super().__init__(parent=parent)
-        self.pack(side='bottom', pady=0, padx=5, fill='x')
+        self.pack(side='bottom', pady=10, padx=5, fill='x')
         self.image = image
 
         ctk.CTkLabel(self, text="Suggested Values").pack(pady=5)
