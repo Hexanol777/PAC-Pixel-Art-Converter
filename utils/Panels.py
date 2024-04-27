@@ -172,7 +172,7 @@ class AnalysisPanel(Panel):
         self.pack(side='bottom', pady=10, padx=5, fill='x')
         self.image = image
 
-        ctk.CTkLabel(self, text="Suggested Values").pack(pady=5)
+        ctk.CTkLabel(self, text="Suggested Values").pack(pady=2)
 
         self.analyze_image()
 

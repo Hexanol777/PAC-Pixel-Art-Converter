@@ -4,7 +4,7 @@ import PIL
 
 class Menu(ctk.CTkTabview): # main menu
     def __init__(self, parent, pixel_size, color_palette, brightness, sharpness, vibrance, export_image, image, load_video):
-        super().__init__(master = parent)
+        super().__init__(master = parent, border_width=2, border_color='#333333')
         self.grid(row = 0, column = 0, sticky = 'nsew', pady = 10 , padx = 10)
 
 
@@ -12,11 +12,16 @@ class Menu(ctk.CTkTabview): # main menu
         if isinstance(image, (PIL.Image.Image)): # checks for img or vid
             self.add('Parameters')
             self.add('Save Options')
+            #self.add('Settings')
             Parameters(self.tab('Parameters'), pixel_size, color_palette, brightness, sharpness, vibrance, image, load_video)
             SaveOptions(self.tab('Save Options'), export_image)
+            #Options(self.tab('Settings'))
+
         else:
             self.add('Parameters')
+            #self.add('Settings')
             Parameters(self.tab('Parameters'), pixel_size, color_palette, brightness, sharpness, vibrance, image, load_video)
+            #Options(self.tab('Settings'))
 
 
 class Parameters(ctk.CTkFrame): # parameters tab
@@ -58,3 +63,9 @@ class SaveOptions(ctk.CTkFrame): # save options tab
         FileNamePanel(self, self.name_string, self.file_string)
         FilePathPanel(self, self.path_string)
         SaveButton(self, export_image, self.name_string, self.file_string, self.path_string)
+
+
+class Options(ctk.CTkFrame):
+    def __init__(self, parent):
+        super().__init__(master = parent, fg_color= 'transparent')
+        self.pack(expand = True, fill = 'both')
