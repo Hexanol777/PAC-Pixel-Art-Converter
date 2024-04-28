@@ -55,10 +55,9 @@ class SaveOptions(ctk.CTkFrame): # save options tab
 
         # data
         self.name_string = ctk.StringVar()
-        self.file_string = ctk.StringVar(value= 'jpg')
+        self.file_string = ctk.StringVar(value = 'jpg')
         self.path_string = ctk.StringVar()
         
-
         # widget
         FileNamePanel(self, self.name_string, self.file_string)
         FilePathPanel(self, self.path_string)

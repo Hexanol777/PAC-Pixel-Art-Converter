@@ -4,8 +4,6 @@ from tkinter import filedialog
 from auto_value import *
 from video_funcs import process_video
 
-
-
 class Panel(ctk.CTkFrame):
     def __init__(self, parent): # main panel
         super().__init__(master = parent, fg_color = DARK_GREY, border_width = 0.75, border_color = BORDER, corner_radius=10)
@@ -116,7 +114,7 @@ class FileNamePanel(Panel): # file name panel for videos
 
         # preview text
         self.output = ctk.CTkLabel(self, text = '')
-        self.output.pack()
+        self.output.pack(pady=1)
 
     def click(self, value):
         self.file_string.set(value)
@@ -133,7 +131,7 @@ class FilePathPanel(Panel):
         self.path_string = path_string
 
         ctk.CTkButton(self, text= 'Open Explorer', command = self.open_file_dialog).pack(pady = 5)
-        ctk.CTkEntry(self, textvariable= self.path_string).pack(expand = True, fill = 'both', padx = 5, pady = 5)
+        ctk.CTkEntry(self, textvariable= self.path_string, text_color='white').pack(expand = True, fill = 'both', padx = 5, pady = 5)
 
     def open_file_dialog(self):
         self.path_string.set(filedialog.askdirectory())
@@ -147,14 +145,13 @@ class SaveButton(ctk.CTkButton):
         self.file_string = file_string
         self.path_string = path_string
 
-
     def save(self):
         self.export_image(
             self.name_string.get(),
             self.file_string.get(),
             self.path_string.get()
             )
-
+        
 class SuggestedValues(ctk.CTkFrame):
     def __init__(self, parent, text, suggested_value):
         super().__init__(master=parent, fg_color=DARK_GREY)

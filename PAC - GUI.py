@@ -38,8 +38,11 @@ class pixelize(ctk.CTk):
         self.canvas_width = 0
         self.canvas_height = 0
 
-        # widgets
+        # Widgets
         self.image_import = ImageImport(self, self.import_image)
+
+        # Key binds
+        self.bind('<Escape>', self.close_app)  # Bind Escape key to close the app
 
         # run
         self.mainloop()
@@ -52,7 +55,6 @@ class pixelize(ctk.CTk):
         self.brightness = ctk.DoubleVar(value = BRIGHTNESS_DEFAULT)
         self.vibrance = ctk.DoubleVar(value = VIBRANCE_DEFAULT)
         self.sharpness = ctk.DoubleVar(value = SHARPNESS_DEFAULT)
-
 
         self.pixel_size.trace('w', self.handle_parameter_change)
         self.color_palette.trace('w', self.handle_parameter_change)
@@ -120,7 +122,7 @@ class pixelize(ctk.CTk):
                          self.load_video
                          )
 
-    def close_app(self):
+    def close_app(self, event=None):
         # removes the image from the frame
         try:
             self.image_output.grid_forget()
@@ -180,9 +182,8 @@ class pixelize(ctk.CTk):
                                        y + self.image_height / 2, 
                                        image=self.image_tk)
 
-    def export_image(self, name, file, path):
-        export_string = f'{path}/{name} - {self.parameter_values}.{file}' # Formatting the string
-
+    def export_image(self, name, file_extention, path):
+        export_string = f'{path}/{name} - {self.parameter_values}.{file_extention}' # Formatting the string
         # Extract values from the name
         pixel_size, color_palette, brightness, sharpness, vibrance = map(int, self.parameter_values.split(' - '))
 
