@@ -258,7 +258,7 @@ class ApplyValuesButton(ctk.CTkButton):
 
 class Notifications(ctk.CTkFrame):
     def __init__(self, parent, message):
-        super().__init__(parent, bg_color='transparent', fg_color=DARK_GREY, width=125, height=75, border_color=BORDER, border_width=1, corner_radius=10)
+        super().__init__(parent, bg_color='transparent', fg_color=DARK_GREY, width=125, height=85, border_color=BORDER, border_width=1, corner_radius=10)
         self.pack_propagate(0)
 
         right_offset = 15

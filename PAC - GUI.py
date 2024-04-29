@@ -2,7 +2,7 @@ import sys
 sys.path.append("utils")
 import customtkinter as ctk
 from utils.image_widgets import *
-from PIL import Image, ImageTk, ImageEnhance
+from PIL import Image, ImageTk
 import PIL
 from utils.Settings import *
 from utils.Panels import *
@@ -43,13 +43,15 @@ class pixelize(ctk.CTk):
 
         # Key binds
         self.bind('<Escape>', self.close_app)  # Bind Escape key to close the app
+        self.bind('<BackSpace>', self.reset_image) # bind the BackSpace key to reset the image
+        self.bind("<KeyPress-Shift_L>", self.show_changes)
+        self.bind("<KeyRelease-Shift_L>", self.hide_changes)
 
         # run
         self.mainloop()
 
     def init_parameters(self):
         ### might try to pack these in a dictionary now that there are too many of them...
-
         self.pixel_size = ctk.DoubleVar(value = PIXEL_SIZE_DEFAULT)
         self.color_palette = ctk.DoubleVar(value = COLOR_PALETTE_DEFAULT)
         self.brightness = ctk.DoubleVar(value = BRIGHTNESS_DEFAULT)
@@ -62,6 +64,7 @@ class pixelize(ctk.CTk):
         self.sharpness.trace('w', self.handle_parameter_change)
         self.vibrance.trace('w', self.handle_parameter_change)
 
+        self.image_check = None
 
     def handle_parameter_change(self, *args):
         if isinstance(self.original, (PIL.Image.Image)):
@@ -96,21 +99,21 @@ class pixelize(ctk.CTk):
 
     def import_image(self, path):
         self.image_import.grid_forget()
-        if path.endswith(('.mp4', '.avi', '.mov', '.mkv', '.gif')):
+
+        if path.endswith(('.mp4', '.avi', '.mov', '.mkv', '.gif', '.webm')):
             self.video_output = VideoOutput(self, path)
             self.original = path
-       
+
         else:
             self.original = Image.open(path)
             self.image = self.original
-            print(self.image)
             self.image_title = os.path.splitext(os.path.basename(path))[0]  # extract the image title without the extention
             self.image_ratio = self.image.size[0] / self.image.size[1]
             self.image_tk = ImageTk.PhotoImage(self.image)
             self.image_output = ImageOutput(self, self.resize_image)
-
         
         self.close_button = CloseOutput(self, self.close_app)
+        Notifications(self, "Press <Backspace> to revert to the original image anytime!")
 
         self.menu = Menu(self, self.pixel_size,
                          self.color_palette,
@@ -219,5 +222,22 @@ class pixelize(ctk.CTk):
     def load_video(self, filename):
         self.video_output.video_player.load(filename)
         Notifications(self, "Video Saved in temp Folder Press <<Play>> to See the Results")
+    
+    def reset_image(self, event):
+        self.image = self.original
+        self.place_image()
+
+    def show_changes(self, event):
+        if self.image_check is None:
+            self.image_check = self.image
+        self.image = self.original 
+        self.place_image()
+
+    def hide_changes(self, event):
+        if self.image_check is not None:
+            self.image = self.image_check
+            self.image_check = None
+            self.place_image()
+
 
 pixelize()
