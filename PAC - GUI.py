@@ -43,9 +43,9 @@ class pixelize(ctk.CTk):
 
         # Key binds
         self.bind('<Escape>', self.close_app)  # Bind Escape key to close the app
-        self.bind('<BackSpace>', self.reset_image) # bind the BackSpace key to reset the image
-        self.bind("<KeyPress-Shift_L>", self.show_changes)
-        self.bind("<KeyRelease-Shift_L>", self.hide_changes)
+        self.bind('<BackSpace>', self.reset_image) # Bind the BackSpace key to reset the image
+        self.bind("<KeyPress-Shift_L>", self.show_changes) # Bind toggle L_Shift to show changes
+        self.bind("<KeyRelease-Shift_L>", self.hide_changes) # Bind toggle L_Shift to hide changes
 
         # run
         self.mainloop()
@@ -115,7 +115,8 @@ class pixelize(ctk.CTk):
         self.close_button = CloseOutput(self, self.close_app)
         Notifications(self, "Press <Backspace> to revert to the original image anytime!")
 
-        self.menu = Menu(self, self.pixel_size,
+        self.menu = Menu(self, 
+                         self.pixel_size,
                          self.color_palette,
                          self.brightness,
                          self.sharpness,

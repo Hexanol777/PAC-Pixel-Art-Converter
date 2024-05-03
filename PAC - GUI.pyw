@@ -2,7 +2,7 @@ import sys
 sys.path.append("utils")
 import customtkinter as ctk
 from utils.image_widgets import *
-from PIL import Image, ImageTk, ImageEnhance
+from PIL import Image, ImageTk
 import PIL
 from utils.Settings import *
 from utils.Panels import *
@@ -20,7 +20,6 @@ class pixelize(ctk.CTk):
         self.geometry('1100x750')
         self.minsize(900, 600)
         
-
         try:
             self.iconbitmap('lantern.ico')
         except Exception as e:
@@ -39,22 +38,25 @@ class pixelize(ctk.CTk):
         self.canvas_width = 0
         self.canvas_height = 0
 
-        # widgets
+        # Widgets
         self.image_import = ImageImport(self, self.import_image)
-        
+
+        # Key binds
+        self.bind('<Escape>', self.close_app)  # Bind Escape key to close the app
+        self.bind('<BackSpace>', self.reset_image) # Bind the BackSpace key to reset the image
+        self.bind("<KeyPress-Shift_L>", self.show_changes) # Bind toggle L_Shift to show changes
+        self.bind("<KeyRelease-Shift_L>", self.hide_changes) # Bind toggle L_Shift to hide changes
 
         # run
         self.mainloop()
 
     def init_parameters(self):
         ### might try to pack these in a dictionary now that there are too many of them...
-
         self.pixel_size = ctk.DoubleVar(value = PIXEL_SIZE_DEFAULT)
         self.color_palette = ctk.DoubleVar(value = COLOR_PALETTE_DEFAULT)
         self.brightness = ctk.DoubleVar(value = BRIGHTNESS_DEFAULT)
         self.vibrance = ctk.DoubleVar(value = VIBRANCE_DEFAULT)
         self.sharpness = ctk.DoubleVar(value = SHARPNESS_DEFAULT)
-
 
         self.pixel_size.trace('w', self.handle_parameter_change)
         self.color_palette.trace('w', self.handle_parameter_change)
@@ -62,6 +64,7 @@ class pixelize(ctk.CTk):
         self.sharpness.trace('w', self.handle_parameter_change)
         self.vibrance.trace('w', self.handle_parameter_change)
 
+        self.image_check = None
 
     def handle_parameter_change(self, *args):
         if isinstance(self.original, (PIL.Image.Image)):
@@ -96,23 +99,24 @@ class pixelize(ctk.CTk):
 
     def import_image(self, path):
         self.image_import.grid_forget()
-        if path.endswith(('.mp4', '.avi', '.mov', '.mkv', '.gif')):
+
+        if path.endswith(('.mp4', '.avi', '.mov', '.mkv', '.gif', '.webm')):
             self.video_output = VideoOutput(self, path)
             self.original = path
-       
+
         else:
             self.original = Image.open(path)
             self.image = self.original
-            print(self.image)
             self.image_title = os.path.splitext(os.path.basename(path))[0]  # extract the image title without the extention
             self.image_ratio = self.image.size[0] / self.image.size[1]
             self.image_tk = ImageTk.PhotoImage(self.image)
             self.image_output = ImageOutput(self, self.resize_image)
-
         
         self.close_button = CloseOutput(self, self.close_app)
+        Notifications(self, "Press <Backspace> to revert to the original image anytime!")
 
-        self.menu = Menu(self, self.pixel_size,
+        self.menu = Menu(self, 
+                         self.pixel_size,
                          self.color_palette,
                          self.brightness,
                          self.sharpness,
@@ -122,7 +126,7 @@ class pixelize(ctk.CTk):
                          self.load_video
                          )
 
-    def close_app(self):
+    def close_app(self, event=None):
         # removes the image from the frame
         try:
             self.image_output.grid_forget()
@@ -182,9 +186,8 @@ class pixelize(ctk.CTk):
                                        y + self.image_height / 2, 
                                        image=self.image_tk)
 
-    def export_image(self, name, file, path):
-        export_string = f'{path}/{name} - {self.parameter_values}.{file}' # Formatting the string
-
+    def export_image(self, name, file_extention, path):
+        export_string = f'{path}/{name} - {self.parameter_values}.{file_extention}' # Formatting the string
         # Extract values from the name
         pixel_size, color_palette, brightness, sharpness, vibrance = map(int, self.parameter_values.split(' - '))
 
@@ -220,5 +223,22 @@ class pixelize(ctk.CTk):
     def load_video(self, filename):
         self.video_output.video_player.load(filename)
         Notifications(self, "Video Saved in temp Folder Press <<Play>> to See the Results")
+    
+    def reset_image(self, event):
+        self.image = self.original
+        self.place_image()
+
+    def show_changes(self, event):
+        if self.image_check is None:
+            self.image_check = self.image
+        self.image = self.original 
+        self.place_image()
+
+    def hide_changes(self, event):
+        if self.image_check is not None:
+            self.image = self.image_check
+            self.image_check = None
+            self.place_image()
+
 
 pixelize()

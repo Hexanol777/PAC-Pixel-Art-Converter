@@ -5,7 +5,7 @@
 
 # PAC - Pixel Art Converter
 
-PAC (Pixel Art Converter) is a simple GUI application that allows you to convert images into pixel art. It provides various options to manipulate the image, such as adjusting pixel size, color palette, brightness, sharpness, and vibrance.
+PAC (Pixel Art Converter) is a simple GUI application that allows you to convert images and videos into pixel art. It provides various options to manipulate images and videos, such as adjusting pixel size, color palette, brightness, sharpness, and vibrance.
 
 <p align="center">
   <img src="https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/READMEmd/PAC%20-%20Screenshot%202.png" alt="PAC - Screenshot 2" />
@@ -33,6 +33,13 @@ PAC (Pixel Art Converter) is a simple GUI application that allows you to convert
 
 The Auto Value Determination feature employs a rather simple but effective algorithm to analyze the input image or video and suggest parameter values for pixel size, color palette, brightness, sharpness, and vibrance. Initially, it uses a set of 80 various points to evaluate the characteristics of the media and generate a preliminary set of parameter values. Over time, as the user continues to utilize the app and adjusts the settings according to their preferences, The algorithm dynamically adapts and refines its suggestions to better align with the user's taste. This iterative process ensures that the parameter values suggested by Auto Value Determination become increasingly more personalized to the user.
 
+#### Key Bindings
+
+```bash
+Escape the App: `Esc` key
+Reset results: `Backspace` key
+Show/Hide changes: toggle `Shift_L`
+```
 
 ## Requirements
 
@@ -72,7 +79,7 @@ The exported images are structured in the below formatting scheme:
 
 `NameGivenByUser` - `pixel_size` - `color_palette` - `brightness` - `sharpness` - `vibrance`
 
-Image name serves as a record of the specific parameter values used during the image generation
+Image name serves as a record of the specific parameter values used during the image generation.
 ## Future Enhancements
 
 - ~~Optimize image operations using NumPy for a faster execution time~~ minimal change noticed...
@@ -83,6 +90,7 @@ Image name serves as a record of the specific parameter values used during the i
 - ~~Enhance overall theme and give it a modern look~~ Done!
 - ~~`Dynamic GUI` changing based on the imported file~~ Done!
 - ~~Add `Notifications`~~ Done!
+- ~~Add `Key Binds`~~ Done!
 
 ## Examples
 | ![LifeLine](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/input/2.jpg) | ![LifeLine](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Lifeline%20-%205%20-%2075%20-%20100%20-%20100.png) |
