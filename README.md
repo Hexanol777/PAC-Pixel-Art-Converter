@@ -98,9 +98,9 @@ Image name serves as a record of the specific parameter values used during the i
 | *LifeLine* | *LifeLine - Pixelized* |
 
 
-| ![Lain](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/input/Lain.jpg) | ![Lain - Pixelized](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Lain%20-%205%20-%2025%20-%20100%20-%20121.png) |
+| ![Rumia](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/input/1.jpg) | ![Rumia - Pixelized](https://github.com/Hexanol777/PAC-Pixel-Art-Converter/blob/main/output/Rumia%20-%205%20-%2075%20-%20100%20-%20130.png) |
 | --- | --- |
-| *Lain* | *Lain - Pixelized* |
+| *Rumia* | *Rumia - Pixelized* |
 
 
 
