@@ -4,6 +4,7 @@ import imageio
 import numpy as np
 import cv2
 import os
+from concurrent.futures import ThreadPoolExecutor
 
 def resize_video_pixelsize(image, pixel_size):
     # Resize the image to the desired pixel size
@@ -15,7 +16,6 @@ def resize_video_pixelsize(image, pixel_size):
     final_resized_img = resized_img_pixelsize.resize((width, height), Image.NEAREST)
     return final_resized_img
 
-
 def extract_frames(video_path):
     frames = []
     # Open the video
@@ -23,7 +23,7 @@ def extract_frames(video_path):
     fps = cap.get(cv2.CAP_PROP_FPS)
     if not cap.isOpened():
         print("Error: Unable to open video file")
-        return frames
+        return frames, fps
     
     # Reading till the video is complete
     while cap.isOpened():
@@ -32,7 +32,7 @@ def extract_frames(video_path):
         if ret:
             # Convert colors
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            # Convert the np array to pil
+            # Convert the np array to PIL Image
             image = Image.fromarray(frame_rgb)
             # Append the image
             frames.append(image)
@@ -61,20 +61,31 @@ def create_video(images, output_file, fps=60):
     writer.close()
     print(output_file)
 
+def process_frame(frame, pixel_size, color_palette, brightness_factor, sharpness_factor, vibrance_factor):
+    # Apply the pipeline to the frame
+    frame = resize_video_pixelsize(frame, pixel_size)
+    frame = quantize_colors(frame, color_palette)
+    frame = adjust_brightness(frame, brightness_factor)
+    frame = enhance_sharpness(frame, sharpness_factor)
+    frame = adjust_vibrance(frame, vibrance_factor)
+    return frame
+
 def process_video(video_path, pixel_size, color_palette, brightness_factor, sharpness_factor, vibrance_factor):
     print(pixel_size, color_palette, brightness_factor, sharpness_factor, vibrance_factor)
     frame_list, fps = extract_frames(video_path)
-    transformed_frames = []
-    for frame in frame_list:
-        # Apply the pipeline to the frame
-        frame = resize_video_pixelsize(frame, pixel_size)
-        frame = quantize_colors(frame, color_palette)
-        frame = adjust_brightness(frame, brightness_factor)
-        frame = enhance_sharpness(frame, sharpness_factor)
-        frame = adjust_vibrance(frame, vibrance_factor)
-        # Append to list
-        transformed_frames.append(frame)
 
+    # Use ThreadPoolExecutor for parallel processing
+    with ThreadPoolExecutor() as executor:
+        # Map each frame to the processing function
+        transformed_frames = list(executor.map(
+            process_frame,
+            frame_list,
+            [pixel_size] * len(frame_list),
+            [color_palette] * len(frame_list),
+            [brightness_factor] * len(frame_list),
+            [sharpness_factor] * len(frame_list),
+            [vibrance_factor] * len(frame_list)
+        ))
 
     parameter_values = f'{round(pixel_size)}' \
                        f' - {round(color_palette)}' \
