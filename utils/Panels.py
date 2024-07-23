@@ -3,6 +3,7 @@ from Settings import *
 from tkinter import filedialog
 from auto_value import *
 from video_funcs import process_video
+import threading
 
 class Panel(ctk.CTkFrame):
     def __init__(self, parent): # main panel
@@ -237,24 +238,36 @@ class VideoValueEntry(Panel): # Value Entries for video
         self.num_label.configure(text = f'{round(value, 0)}')
         
 class ApplyValuesButton(ctk.CTkButton):
-        def __init__(self, parent, video, pixel_size, color_palette, brightness, sharpness, vibrance, load_video):
-            super().__init__(master = parent, text= 'Create Video', command=self.apply_values, border_width=0.75, border_color=BORDER)
+    def __init__(self, parent, video, pixel_size, color_palette, brightness, sharpness, vibrance, load_video):
+        super().__init__(master=parent, text='Create Video', command=self.apply_values, border_width=0.75, border_color=BORDER)
 
-            self.video = video
-            self.pixel_value = pixel_size
-            self.color_pallete_value = color_palette
-            self.brightness_value = brightness
-            self.sharpness_value = sharpness
-            self.vibrance_value = vibrance
-            self.load_video = load_video
+        self.video = video
+        self.pixel_value = pixel_size
+        self.color_palette_value = color_palette
+        self.brightness_value = brightness
+        self.sharpness_value = sharpness
+        self.vibrance_value = vibrance
+        self.load_video = load_video
 
-            self.pack(side = 'bottom', pady = 5)
+        self.pack(side='bottom', pady=5)
 
-        def apply_values(self):
-            self.video = process_video(self.video, self.pixel_value.get(), 
-                                       self.color_pallete_value.get(), self.brightness_value.get(), 
-                                       self.sharpness_value.get(), self.vibrance_value.get())
-            self.load_video(self.video)
+    def apply_values(self):
+        # create a separate to process the video 
+        thread = threading.Thread(target=self.process_video_in_thread)
+        thread.start()
+
+    def process_video_in_thread(self):
+        # run the thread 
+        self.video = process_video(
+            self.video,
+            self.pixel_value.get(),
+            self.color_palette_value.get(),
+            self.brightness_value.get(),
+            self.sharpness_value.get(),
+            self.vibrance_value.get()
+        )
+
+        self.load_video(self.video)
 
 class Notifications(ctk.CTkFrame):
     def __init__(self, parent, message):
