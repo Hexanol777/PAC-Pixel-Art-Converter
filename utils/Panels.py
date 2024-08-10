@@ -236,9 +236,28 @@ class VideoValueEntry(Panel): # Value Entries for video
 
     def update_text(self, value):
         self.num_label.configure(text = f'{round(value, 0)}')
-        
+
+class ProgressBar(ctk.CTkFrame):
+    def __init__(self, parent):
+        super().__init__(parent, border_color=BORDER, border_width=1, corner_radius=10)
+
+        self.loading_progress = ctk.CTkProgressBar(master=self, width=200)
+        self.loading_progress.configure(mode="indeterminate")
+        self.loading_progress.pack(padx=10, pady=10)
+
+        self.pack(side='bottom', pady=10, padx=5, fill='x')
+
+    def start(self):
+        # Show and start the progress bar
+        self.loading_progress.start()
+
+    def stop(self):
+        # Stop and hide the progress bar
+        self.loading_progress.stop()
+
+
 class ApplyValuesButton(ctk.CTkButton):
-    def __init__(self, parent, video, pixel_size, color_palette, brightness, sharpness, vibrance, load_video):
+    def __init__(self, parent, video, pixel_size, color_palette, brightness, sharpness, vibrance, load_video, progress_bar):
         super().__init__(master=parent, text='Create Video', command=self.apply_values, border_width=0.75, border_color=BORDER)
 
         self.video = video
@@ -248,16 +267,20 @@ class ApplyValuesButton(ctk.CTkButton):
         self.sharpness_value = sharpness
         self.vibrance_value = vibrance
         self.load_video = load_video
+        self.progress_bar = progress_bar
 
         self.pack(side='bottom', pady=5)
 
     def apply_values(self):
-        # create a separate to process the video 
+        # Start the progress bar
+        self.progress_bar.start()
+
+        # Create a separate thread to process the video
         thread = threading.Thread(target=self.process_video_in_thread)
         thread.start()
 
     def process_video_in_thread(self):
-        # run the thread 
+        # Run the video processing
         self.video = process_video(
             self.video,
             self.pixel_value.get(),
@@ -267,6 +290,10 @@ class ApplyValuesButton(ctk.CTkButton):
             self.vibrance_value.get()
         )
 
+        # Stop the progress bar after processing is complete
+        self.progress_bar.stop()
+
+        # Load the processed video
         self.load_video(self.video)
 
 class Notifications(ctk.CTkFrame):

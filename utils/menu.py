@@ -44,7 +44,8 @@ class Parameters(ctk.CTkFrame): # parameters tab
             brightness_panel = VideoValueEntry(self, 'Brightness', brightness, 0, 200)
             sharpness_panel = VideoValueEntry(self, 'Edge Sharpness', sharpness, 0, 20)
             vibrance_panel = VideoValueEntry(self, 'Color Vibrance', vibrance, 0, 300)
-            ApplyValuesButton(self, image, pixel_size, color_palette, brightness, sharpness, vibrance, load_video)
+            progress_bar = ProgressBar(self)
+            ApplyValuesButton(self, image, pixel_size, color_palette, brightness, sharpness, vibrance, load_video, progress_bar)
 
 
 
